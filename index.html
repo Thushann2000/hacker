@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Free Wi-Fi Login</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #0f0;
+      font-family: 'Share Tech Mono', monospace;
+      overflow: hidden;
+      height: 100vh;
+      position: relative;
+      touch-action: manipulation;
+    }
+
+    #matrix { 
+      position: absolute; 
+      top: 0; left: 0; 
+      width: 100%; height: 100%; 
+      z-index: 1; 
+      opacity: 0.20; 
+    }
+
+    .scanlines {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,255,0,0.09) 3px, rgba(0,255,0,0.09) 6px);
+      z-index: 2;
+      animation: scan 4s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes scan { 0% { background-position: 0 0; } 100% { background-position: 0 200px; } }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+    }
+
+    .hacked-box {
+      background: rgba(8, 8, 8, 0.98);
+      border: 3px solid #f00;
+      box-shadow: 0 0 50px #f00, inset 0 0 30px rgba(255,0,0,0.5);
+      padding: 35px 25px;
+      width: 100%;
+      max-width: 460px;
+      text-align: center;
+      animation: flicker 0.13s infinite alternate, shake 0.8s infinite;
+    }
+
+    @keyframes flicker { 0% { opacity: 0.92; } 100% { opacity: 1; } }
+    @keyframes shake {
+      0%, 100% { transform: translate(0); }
+      20%, 60% { transform: translate(-4px, 3px); }
+      40%, 80% { transform: translate(4px, -3px); }
+    }
+
+    h1 {
+      color: #f00;
+      font-size: clamp(1.9rem, 7vw, 2.5rem);
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      text-shadow: 0 0 20px #f00;
+      margin-bottom: 12px;
+    }
+
+    .glitch {
+      font-size: clamp(1.45rem, 5.5vw, 1.95rem);
+      font-weight: bold;
+      color: #0f0;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin: 18px 0 28px;
+      position: relative;
+    }
+
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch::before {
+      color: #0ff;
+      animation: glitch1 0.75s infinite linear alternate-reverse;
+    }
+    .glitch::after {
+      color: #f0f;
+      animation: glitch2 0.6s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch1 { 0%{transform:translate(-3px,-3px);} 100%{transform:translate(3px,3px);} }
+    @keyframes glitch2 { 0%{transform:translate(3px,3px);} 100%{transform:translate(-3px,-3px);} }
+
+    input {
+      width: 100%;
+      padding: 16px 14px;
+      margin: 14px 0;
+      background: #111;
+      border: 2px solid #0f0;
+      color: #0f0;
+      font-size: 1.15rem;
+    }
+
+    input:focus {
+      border-color: #0ff;
+      box-shadow: 0 0 20px #0ff;
+      outline: none;
+    }
+
+    .submit {
+      background: #c00;
+      color: white;
+      border: none;
+      padding: 18px;
+      width: 100%;
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .submit:active {
+      background: #f00;
+      transform: scale(0.98);
+    }
+
+    .alert {
+      color: #f66;
+      animation: blink 0.9s infinite;
+      margin: 20px 0 15px;
+      font-size: 1.1rem;
+    }
+
+    @keyframes blink { 50% { opacity: 0.35; } }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 0.92rem;
+      color: #600;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="matrix"></canvas>
+  <div class="scanlines"></div>
+
+  <!-- Sound Effects (Working Direct Links) -->
+  <audio id="ambientSound" loop preload="auto">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="hackSound" preload="auto">
+    <source src="https://www.orangefreesounds.com/wp-content/uploads/2021/03/Glitch-sound-effect.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="container">
+    <div class="hacked-box">
+      <h1>⚠ SYSTEM BREACHED ⚠</h1>
+      
+      <div class="glitch" data-text="YOU'RE HACKED BY SINGAPORE ANONYMOUS">
+        YOU'RE HACKED BY SINGAPORE ANONYMOUS
+      </div>
+
+      <p style="color:#f44; margin-bottom:25px;">
+        Your connection has been hijacked<br>
+        <span class="alert">Enter credentials to continue...</span>
+      </p>
+
+      <form id="loginForm">
+        <input type="text" name="username" placeholder="Username or Email" required autocomplete="off">
+        <input type="password" name="password" placeholder="Password" required autocomplete="off">
+        <input type="submit" value="CONNECT TO WI-FI" class="submit">
+      </form>
+
+      <div class="footer">
+        <p>Powered by Free Public Wi-Fi • All traffic is monitored</p>
+        <p style="color:#700;">IP Traced by California • Captured by Thushann</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Matrix Rain
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+
+    const chars = "01アイウエオ1234567890abcdefghijklmnopqrstuvwxyz$@#&%*";
+    const fontSize = 14;
+    let columns = w / fontSize;
+    let drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+      ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = '#0f0';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    setInterval(draw, 35);
+
+    window.addEventListener('resize', () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      columns = w / fontSize;
+    });
+
+    // Sounds
+    const ambientSound = document.getElementById('ambientSound');
+    const hackSound = document.getElementById('hackSound');
+
+    // Low volume ambient on load
+    window.addEventListener('load', () => {
+      ambientSound.volume = 0.22;
+      ambientSound.play().catch(() => {});
+    });
+
+    // Form Submit - Sound + Capture
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const username = this.username.value.trim();
+      const password = this.password.value.trim();
+
+      if (username && password) {
+        // Play glitch hack sound
+        hackSound.volume = 0.85;
+        hackSound.currentTime = 0;
+        hackSound.play().catch(err => {
+          console.log("Sound play error:", err);
+          alert("Sound blocked by browser. Check console for captured credentials.");
+        });
+
+        console.log("%c🔥 CREDENTIALS STOLEN 🔥", "color: #f00; font-size: 22px; font-weight: bold;");
+        console.log("Username/Email →", username);
+        console.log("Password       →", password);
+
+        alert(`✅ Connected to Wi-Fi!\n\nYour credentials have been captured.\n\nUsername: ${username}\nPassword: ${password}`);
+
+        // Fake success page
+        document.body.innerHTML = `
+          <div style="background:#000; color:#0f0; height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding:20px;">
+            <h1 style="color:#0f0; font-size: clamp(2rem, 8vw, 3rem);">CONNECTED SUCCESSFULLY</h1>
+            <p style="color:#f00; margin:30px 0; font-size:1.6rem;">Your data is now with Singapore Anonymous</p>
+            <p style="color:#555;">Captured by Thushann</p>
+            <button onclick="location.reload()" style="margin-top:40px; padding:16px 50px; background:#f00; color:white; border:none; font-size:1.3rem; cursor:pointer;">
+              Try Again
+            </button>
+          </div>`;
+      }
+    });
+  </script>
+</body>
+</html>
