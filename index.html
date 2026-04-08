@@ -16,7 +16,6 @@
             width: 100vw;
             text-align: center;
         }
-
         body::before {
             content: '';
             position: absolute;
@@ -28,41 +27,39 @@
             animation: scanline 10s linear infinite;
             z-index: 0;
         }
-
         @keyframes scanline {
             0% { transform: translateY(-100%); }
             100% { transform: translateY(100%); }
         }
-
         canvas {
             position: absolute;
             top: 0; left: 0;
             z-index: 1;
             opacity: 0.9;
         }
-
         .container {
             position: relative;
             z-index: 10;
-            padding-top: 80px;
+            padding: 15px;
+            padding-top: 15vh;
+            max-width: 100%;
+            box-sizing: border-box;
         }
-
         h1 {
-            font-size: 2.8rem;
-            margin: 10px 0;
+            font-size: clamp(1.8rem, 8vw, 3rem);
+            margin: 15px 0;
             text-shadow: 0 0 20px #00ff41;
+            line-height: 1.2;
         }
-
         p {
-            font-size: 1.4rem;
+            font-size: clamp(1.1rem, 5vw, 1.5rem);
             margin: 15px 0;
             opacity: 0.9;
         }
-
         .gift-btn {
             margin-top: 40px;
-            padding: 18px 40px;
-            font-size: 1.5rem;
+            padding: clamp(14px, 4vw, 20px) clamp(30px, 8vw, 50px);
+            font-size: clamp(1.2rem, 5vw, 1.7rem);
             background: transparent;
             color: #00ff41;
             border: 3px solid #00ff41;
@@ -70,38 +67,41 @@
             cursor: pointer;
             box-shadow: 0 0 30px #00ff41;
             transition: all 0.3s;
+            width: auto;
+            max-width: 90%;
         }
-
         .gift-btn:hover {
             background: #00ff41;
             color: black;
-            transform: scale(1.1);
+            transform: scale(1.08);
         }
-
         .gift-box {
             display: none;
             margin-top: 40px;
-            font-size: 2rem;
+            font-size: clamp(1.6rem, 6vw, 2.5rem);
             animation: glitch 0.5s infinite;
         }
-
         @keyframes glitch {
             0% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
             20% { text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff; }
         }
+        /* Mobile optimization */
+        @media (max-width: 600px) {
+            .container {
+                padding-top: 10vh;
+            }
+            .gift-btn {
+                margin-top: 30px;
+            }
+        }
     </style>
 </head>
 <body>
-
     <canvas id="matrix"></canvas>
-
     <div class="container">
         <h1>THUSHANN'S BIRTHDAY PARTY THROUGH ONLINE</h1>
-        
         <p>You are officially invited to the hack party 🔥</p>
-
         <button class="gift-btn" onclick="claimGift()">CLAIM YOUR SPECIAL GIFT</button>
-
         <div id="giftBox" class="gift-box">
             🎁<br>
             <span style="font-size:1.6rem;">HACKED GIFT UNLOCKED!</span><br><br>
@@ -110,7 +110,12 @@
         </div>
     </div>
 
-    <!-- Background Music -->
+    <!-- Button Click Sound -->
+    <audio id="clickSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/2578/2578.wav" type="audio/wav">
+    </audio>
+
+    <!-- Background Music (optional, volume குறைச்சு வச்சிருக்கேன்) -->
     <audio id="bgMusic" loop>
         <source src="https://assets.mixkit.co/sfx/preview/2578/2578.wav" type="audio/wav">
     </audio>
@@ -119,12 +124,13 @@
         // Matrix Rain
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
-        
+       
         function resize() {
             canvas.height = window.innerHeight;
             canvas.width = window.innerWidth;
         }
         resize();
+        window.addEventListener('resize', resize);
 
         const alphabet = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         const fontSize = 14;
@@ -136,7 +142,6 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#00ff41';
             ctx.font = fontSize + 'px monospace';
-
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
                 ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
@@ -148,30 +153,34 @@
         }
         setInterval(draw, 35);
 
-        // Gift Function
+        // Gift Function with Sound
         function claimGift() {
+            // Play click sound
+            const clickSound = document.getElementById('clickSound');
+            clickSound.currentTime = 0;
+            clickSound.play().catch(() => {});
+
+            // Hide button and show gift
             document.querySelector('.gift-btn').style.display = 'none';
             document.getElementById('giftBox').style.display = 'block';
-            
-            // Confetti effect (simple)
+
+            // Confetti console effect
             for(let i = 0; i < 30; i++) {
                 setTimeout(() => {
-                    console.log("%c🎉 GIFT UNLOCKED!", "color: lime; font-size: 18px");
+                    console.log("%c🎉 GIFT UNLOCKED! 🔥", "color: lime; font-size: 18px");
                 }, i * 80);
             }
         }
 
         // Background Music
         const music = document.getElementById('bgMusic');
-        music.volume = 0.35;
+        music.volume = 0.25;   // கொஞ்சம் குறைச்சு வச்சிருக்கேன் mobile-ல disturbance வராம இருக்க
 
         window.addEventListener('load', () => {
             setTimeout(() => {
                 music.play().catch(() => {});
-            }, 1000);
+            }, 1500);
         });
-
-        window.addEventListener('resize', resize);
     </script>
 </body>
 </html>
