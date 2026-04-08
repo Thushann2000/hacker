@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACCESS GRANTED</title>
+    <title>THUSHANN'S BIRTHDAY PARTY THROUGH ONLINE</title>
     <style>
         body, html {
             margin: 0;
@@ -14,22 +14,19 @@
             font-family: 'Courier New', monospace;
             height: 100vh;
             width: 100vw;
+            text-align: center;
         }
-        
+
         body::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,255,65,0.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,255,65,0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: scanline 10s linear infinite;
             z-index: 0;
-            animation: scanline 8s linear infinite;
         }
 
         @keyframes scanline {
@@ -39,221 +36,142 @@
 
         canvas {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             z-index: 1;
-            opacity: 0.85;
+            opacity: 0.9;
         }
 
-        .thanks-header {
-            position: absolute;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #00ff41;
-            font-size: 1.1rem;
-            text-shadow: 0 0 15px #00ff41;
-            z-index: 15;
-            letter-spacing: 3px;
-            white-space: nowrap;
-        }
-
-        .terminal {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 92%;
-            max-width: 740px;
+        .container {
+            position: relative;
             z-index: 10;
-            background: rgba(0, 10, 0, 0.92);
-            padding: 20px 18px;
-            border: 2px solid #00ff41;
-            box-shadow: 0 0 40px #00ff41, inset 0 0 20px rgba(0, 255, 65, 0.2);
-            border-radius: 6px;
+            padding-top: 80px;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 18px;
-            font-size: 1.35rem;
-            text-shadow: 0 0 15px #00ff41;
-            letter-spacing: 2px;
+        h1 {
+            font-size: 2.8rem;
+            margin: 10px 0;
+            text-shadow: 0 0 20px #00ff41;
         }
 
-        .line {
-            margin: 7px 0;
-            white-space: pre-wrap;
-            word-break: break-all;
-            opacity: 0;
-            animation: fadeIn 0.6s forwards;
-            font-size: 1.05rem;
-            line-height: 1.4;
-            text-shadow: 0 0 8px #00ff41;
+        p {
+            font-size: 1.4rem;
+            margin: 15px 0;
+            opacity: 0.9;
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        .gift-btn {
+            margin-top: 40px;
+            padding: 18px 40px;
+            font-size: 1.5rem;
+            background: transparent;
+            color: #00ff41;
+            border: 3px solid #00ff41;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 30px #00ff41;
+            transition: all 0.3s;
         }
 
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 19px;
+        .gift-btn:hover {
             background: #00ff41;
-            vertical-align: middle;
-            animation: blink 0.6s step-end infinite;
+            color: black;
+            transform: scale(1.1);
         }
 
-        @keyframes blink {
-            50% { opacity: 0; }
+        .gift-box {
+            display: none;
+            margin-top: 40px;
+            font-size: 2rem;
+            animation: glitch 0.5s infinite;
         }
 
-        /* Mobile Optimization */
-        @media (max-width: 480px) {
-            .thanks-header {
-                font-size: 1rem;
-                top: 12px;
-            }
-            .terminal {
-                padding: 16px 12px;
-                width: 95%;
-            }
-            .header {
-                font-size: 1.25rem;
-            }
-            .line {
-                font-size: 1rem;
-                margin: 6px 0;
-            }
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
+            20% { text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Thanks Message -->
-    <div class="thanks-header">THANKS FOR YOUR WISHING</div>
-
     <canvas id="matrix"></canvas>
 
-    <div class="terminal">
-        <div class="header">=== BIRTHDAY HACK INITIATED ===</div>
-        <div id="lines"></div>
-        <span class="cursor"></span>
+    <div class="container">
+        <h1>THUSHANN'S BIRTHDAY PARTY THROUGH ONLINE</h1>
+        
+        <p>You are officially invited to the hack party 🔥</p>
+
+        <button class="gift-btn" onclick="claimGift()">CLAIM YOUR SPECIAL GIFT</button>
+
+        <div id="giftBox" class="gift-box">
+            🎁<br>
+            <span style="font-size:1.6rem;">HACKED GIFT UNLOCKED!</span><br><br>
+            <span style="font-size:1.3rem;">Unlimited Happiness + Success + Memes for this year</span><br><br>
+            <span style="color:#ffff00;">Hacked & Delivered by Thushann 🕶️</span>
+        </div>
     </div>
 
     <!-- Background Music -->
     <audio id="bgMusic" loop>
         <source src="https://assets.mixkit.co/sfx/preview/2578/2578.wav" type="audio/wav">
-        Your browser does not support the audio element.
     </audio>
 
     <script>
-        // Background Music with better autoplay handling
-        const music = document.getElementById('bgMusic');
-        
-        function playMusic() {
-            music.volume = 0.45;
-            music.play().catch(() => {
-                // Fallback for mobile autoplay block
-                document.body.addEventListener('touchstart', () => {
-                    music.play();
-                }, { once: true });
-            });
-        }
-
-        // Start music when typing begins (better chance of autoplay)
-        window.addEventListener('load', () => {
-            setTimeout(playMusic, 600);
-        });
-
-        // Fast Matrix Rain
+        // Matrix Rain
         const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d', { alpha: true });
+        const ctx = canvas.getContext('2d');
         
-        function resizeCanvas() {
+        function resize() {
             canvas.height = window.innerHeight;
             canvas.width = window.innerWidth;
         }
-        resizeCanvas();
+        resize();
 
-        const alphabet = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$@#';
+        const alphabet = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         const fontSize = 14;
-        let columns = Math.floor(canvas.width / fontSize);
-        let rainDrops = new Array(columns).fill(1);
+        let columns = canvas.width / fontSize;
+        let rainDrops = new Array(Math.floor(columns)).fill(1);
 
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        function draw() {
+            ctx.fillStyle = 'rgba(0,0,0,0.08)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
             ctx.fillStyle = '#00ff41';
             ctx.font = fontSize + 'px monospace';
 
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
                 ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-
-                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.96) {
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                     rainDrops[i] = 0;
                 }
                 rainDrops[i]++;
             }
         }
+        setInterval(draw, 35);
 
-        setInterval(drawMatrix, 30);
-
-        // Fast Auto Typing
-        const linesContainer = document.getElementById('lines');
-        const messages = [
-            "$ initializing_birthday_thanks.exe",
-            "[OK] Firewall breached by friend wishes",
-            "$ Connecting to your device...",
-            "[WARNING] Personal files detected!",
-            "[HACKING] Scanning your photos, chats and memories...",
-            "[PROGRESS] Accessing personal files... 🔥",
-            "[OK] All files accessed successfully (ethical mode only 😉)",
-            "[OK] Happiness buffer overflow detected",
-            "[OK] Deploying success v25",           // ← Change your age here
-            "Root access granted.",
-            "",
-            "Hacked by Thushann ❤️",
-            "This year full admin privileges to success & fun",
-            "— Your friendly neighborhood ethical hacker 🕶️"
-        ];
-
-        let index = 0;
-
-        function typeLine() {
-            if (index >= messages.length) return;
-
-            const line = document.createElement('div');
-            line.className = 'line';
-            linesContainer.appendChild(line);
-
-            let i = 0;
-            const text = messages[index];
-            const speed = 20;
-
-            const interval = setInterval(() => {
-                line.textContent += text.charAt(i);
-                i++;
-                if (i >= text.length) {
-                    clearInterval(interval);
-                    index++;
-                    setTimeout(typeLine, 260);
-                }
-            }, speed);
+        // Gift Function
+        function claimGift() {
+            document.querySelector('.gift-btn').style.display = 'none';
+            document.getElementById('giftBox').style.display = 'block';
+            
+            // Confetti effect (simple)
+            for(let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    console.log("%c🎉 GIFT UNLOCKED!", "color: lime; font-size: 18px");
+                }, i * 80);
+            }
         }
 
-        // Start typing
-        setTimeout(typeLine, 500);
+        // Background Music
+        const music = document.getElementById('bgMusic');
+        music.volume = 0.35;
 
-        // Resize handler
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            columns = Math.floor(canvas.width / fontSize);
-            rainDrops = new Array(columns).fill(1);
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                music.play().catch(() => {});
+            }, 1000);
         });
+
+        window.addEventListener('resize', resize);
     </script>
 </body>
 </html>
