@@ -1,1418 +1,801 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enomy-Finances Staff Portal</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sun Coast Seafood & Grill – Reviews</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f6f8;color:#1a1a2e;min-height:100vh}
-:root{
-  --primary:#1a3a6b;--primary-light:#2557a7;--primary-pale:#e8f0fb;
-  --success:#1a6b3a;--success-pale:#e8f8ef;
-  --warn:#7a4f00;--warn-pale:#fff3dc;
-  --danger:#8b1a1a;--danger-pale:#fdeaea;
-  --border:#dde3ef;--muted:#6b7280;--surface:#fff;
-  --radius:10px;--radius-sm:6px;
-}
-
-/* ── LOGIN ── */
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0f2044 0%,#1a3a6b 50%,#2557a7 100%)}
-.login-card{background:#fff;border-radius:18px;padding:40px 44px;width:420px;box-shadow:0 24px 60px rgba(0,0,0,0.25)}
-.login-brand{text-align:center;margin-bottom:32px}
-.login-brand h1{font-size:22px;font-weight:700;color:var(--primary);letter-spacing:-0.5px}
-.login-brand p{font-size:13px;color:var(--muted);margin-top:4px}
-.role-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:24px;background:#f0f2f7;border-radius:8px;padding:4px}
-.role-tab{text-align:center;padding:8px 4px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:500;color:var(--muted);transition:all .2s}
-.role-tab.active{background:#fff;color:var(--primary);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
-.form-field{margin-bottom:16px}
-.form-field label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;letter-spacing:0.3px;text-transform:uppercase}
-.form-field input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;transition:border .2s}
-.form-field input:focus{border-color:var(--primary-light)}
-.demo-hint{font-size:11px;color:var(--muted);background:#f8f9fc;border-radius:6px;padding:8px 12px;margin-bottom:18px;line-height:1.6}
-.demo-hint strong{color:var(--primary)}
-.btn-login{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s}
-.btn-login:hover{background:var(--primary-light)}
-.login-error{font-size:13px;color:var(--danger);text-align:center;margin-top:12px;display:none}
-
-/* ── APP SHELL ── */
-#app{display:none;height:100vh;flex-direction:row}
-#app.visible{display:flex}
-.sidebar{width:220px;background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
-.sidebar-brand{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,0.12)}
-.sidebar-brand .brand-name{font-size:14px;font-weight:700;color:#fff;letter-spacing:-0.3px}
-.sidebar-brand .brand-role{font-size:11px;color:rgba(255,255,255,0.55);margin-top:3px}
-.nav-group-label{font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:0.8px;text-transform:uppercase;padding:16px 18px 6px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.75);transition:all .15s;border-left:3px solid transparent}
-.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff}
-.nav-item.active{background:rgba(255,255,255,0.13);color:#fff;border-left-color:#7eb3ff}
-.nav-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0}
-.sidebar-footer{margin-top:auto;padding:16px 18px;border-top:1px solid rgba(255,255,255,0.1)}
-.user-pill{display:flex;align-items:center;gap:10px}
-.avatar{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0}
-.user-info .uname{font-size:13px;font-weight:500;color:#fff}
-.user-info .urole{font-size:11px;color:rgba(255,255,255,0.5)}
-.btn-logout{margin-top:10px;width:100%;padding:7px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);border:none;border-radius:6px;font-size:12px;cursor:pointer;transition:background .2s}
-.btn-logout:hover{background:rgba(255,255,255,0.2)}
-
-/* ── MAIN ── */
-.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;gap:12px;flex-shrink:0}
-.topbar-title{font-size:16px;font-weight:600;color:var(--primary);flex:1}
-.topbar-time{font-size:12px;color:var(--muted);background:#f0f2f7;padding:4px 10px;border-radius:20px}
-.content{flex:1;overflow-y:auto;padding:24px}
-
-/* ── PAGES ── */
-.page{display:none}
-.page.active{display:block}
-.page-header{margin-bottom:20px}
-.page-header h2{font-size:20px;font-weight:700;color:var(--primary)}
-.page-header p{font-size:13px;color:var(--muted);margin-top:3px}
-
-/* ── CARDS & PANELS ── */
-.panel{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px}
-.panel-title{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
-.metric{background:#f8f9fc;border-radius:var(--radius);padding:16px;border:1px solid var(--border)}
-.metric-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
-.metric-value{font-size:26px;font-weight:700;color:var(--primary);margin:4px 0}
-.metric-sub{font-size:12px}
-.up{color:var(--success)}.down{color:var(--danger)}
-
-/* ── FORMS ── */
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.3px}
-.field input,.field select,.field textarea{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;outline:none;transition:border .2s;background:#fff}
-.field input:focus,.field select:focus{border-color:var(--primary-light)}
-.field textarea{resize:vertical;min-height:80px}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-
-/* ── BUTTONS ── */
-.btn{padding:9px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
-.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-light)}
-.btn-success{background:#1a6b3a;color:#fff}.btn-success:hover{background:#145e30}
-.btn-outline{background:#fff;color:var(--primary);border:1.5px solid var(--primary)}.btn-outline:hover{background:var(--primary-pale)}
-.btn-danger{background:#8b1a1a;color:#fff}.btn-danger:hover{background:#7a1212}
-.btn-sm{padding:5px 12px;font-size:12px}
-.btn-block{width:100%;justify-content:center}
-
-/* ── RESULT BOX ── */
-.result-box{background:#f8f9fc;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:14px}
-.result-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid #eee}
-.result-row:last-child{border:none}
-.result-label{color:var(--muted)}
-.result-val{font-weight:600;color:var(--primary)}
-.result-total-row{background:var(--primary-pale);border-radius:6px;padding:8px 12px;display:flex;justify-content:space-between;margin-top:8px}
-.result-total-row .result-val{font-size:16px;color:var(--primary)}
-.fee-val{color:var(--danger)}
-
-/* ── TABLES ── */
-.tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:#f0f4fb;color:var(--primary);font-weight:600;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);font-size:12px;text-transform:uppercase;letter-spacing:0.3px}
-td{padding:10px 12px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
-tr:hover td{background:#fafbff}
-
-/* ── PILLS / BADGES ── */
-.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.pill-active{background:var(--success-pale);color:var(--success)}
-.pill-pending{background:var(--warn-pale);color:var(--warn)}
-.pill-review{background:var(--primary-pale);color:var(--primary-light)}
-.pill-danger{background:var(--danger-pale);color:var(--danger)}
-
-/* ── INVESTMENT CARDS ── */
-.inv-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
-.inv-card{border:2px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s}
-.inv-card:hover{border-color:var(--primary-light)}
-.inv-card.selected{border-color:var(--primary);background:var(--primary-pale)}
-.inv-card-name{font-size:13px;font-weight:700;color:var(--primary)}
-.inv-card-detail{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
-
-/* ── ACTIVITY FEED ── */
-.activity-feed{font-size:13px}
-.activity-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #f0f0f0}
-.act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
-.act-content{flex:1}
-.act-content strong{color:var(--primary)}
-.act-time{font-size:11px;color:var(--muted);flex-shrink:0}
-
-/* ── CLIENT LIST ── */
-.client-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid #f0f0f0}
-.cav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
-.cinfo{flex:1}
-.cname{font-weight:600;font-size:13px;color:var(--primary)}
-.cdetail{font-size:12px;color:var(--muted)}
-.cactions{display:flex;gap:6px}
-
-/* ── QUOTE HISTORY ── */
-.quote-card{background:#f8f9fc;border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px}
-.quote-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.quote-type{font-weight:600;font-size:13px;color:var(--primary)}
-.quote-date{font-size:12px;color:var(--muted)}
-
-/* ── MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:14px;padding:28px 30px;width:500px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
-.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.modal-title{font-size:16px;font-weight:700;color:var(--primary)}
-.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);line-height:1}
-
-/* ── ALERTS ── */
-.alert{padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;margin-bottom:12px;display:none}
-.alert-error{background:var(--danger-pale);color:var(--danger);border:1px solid #f5c0c0}
-.alert-success{background:var(--success-pale);color:var(--success);border:1px solid #b0e0c0}
-.alert-info{background:var(--primary-pale);color:var(--primary-light);border:1px solid #c0d8f5}
-
-/* ── RATES GRID ── */
-.rates-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
-.rate-card{background:#f0f4fb;border-radius:var(--radius-sm);padding:10px 12px}
-.rate-pair{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px}
-.rate-value{font-size:16px;font-weight:700;color:var(--primary);margin-top:2px}
-
-/* ── PROFILE ── */
-.profile-header{display:flex;align-items:center;gap:20px;margin-bottom:20px}
-.profile-av{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0}
-.profile-name{font-size:20px;font-weight:700;color:var(--primary)}
-.profile-role{font-size:13px;color:var(--muted);margin-top:2px}
-
-/* ── RETURNS TABLE ── */
-.rtbl th,.rtbl td{padding:8px 12px}
-.rtbl .pos{color:var(--success)}.rtbl .neg{color:var(--danger)}
-
-/* ── RESPONSIVE ── */
-
-/* ── HAMBURGER BUTTON ── */
-.hamburger{display:none;position:fixed;top:10px;left:10px;z-index:2000;background:var(--primary);border:none;border-radius:8px;width:40px;height:40px;cursor:pointer;align-items:center;justify-content:center;font-size:20px;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
-
-/* ── SIDEBAR OVERLAY ── */
-.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1500}
-.sidebar-overlay.open{display:block}
-
-@media(max-width:700px){
-  /* Login */
-  .login-card{width:92%;padding:28px 20px;margin:16px}
-
-  /* Hamburger visible */
-  .hamburger{display:flex}
-
-  /* Sidebar becomes slide-in drawer */
-  .sidebar{
-    position:fixed;top:0;left:-240px;height:100vh;width:220px;
-    z-index:1600;transition:left .25s ease;box-shadow:4px 0 20px rgba(0,0,0,0.25)
+  :root {
+    --ocean: #0a2540;
+    --gold: #e8a820;
+    --sand: #f5e9d0;
+    --coral: #e05a2b;
+    --foam: #ffffff;
+    --mist: #8aafcc;
+    --dark: #06192e;
+    --card-bg: rgba(255,255,255,0.06);
   }
-  .sidebar.open{left:0}
 
-  /* Main area takes full width */
-  #app.visible{flex-direction:column}
-  .main-area{width:100%;overflow:hidden}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* Topbar */
-  .topbar{padding:0 12px 0 56px;height:50px;gap:8px}
-  .topbar-title{font-size:14px}
-  .topbar-time{font-size:11px;padding:3px 8px}
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--ocean);
+    color: var(--foam);
+    min-height: 100vh;
+  }
 
-  /* Content */
-  .content{padding:14px}
+  /* ── PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
 
-  /* Grids */
-  .three-col,.two-col,.inv-cards,.four-col{grid-template-columns:1fr}
-  .metrics{grid-template-columns:1fr 1fr}
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(160deg, #06192e 0%, #0d3358 55%, #1a5276 100%);
+    padding: 0 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 80px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z' fill='%230a2540'/%3E%3C/svg%3E") no-repeat bottom / cover;
+    z-index: 1;
+  }
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 40px;
+    background: rgba(6,25,46,0.7);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(232,168,32,0.2);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo-icon {
+    width: 48px; height: 48px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .logo-text { line-height: 1.1; }
+  .logo-text strong { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--gold); display: block; }
+  .logo-text span { font-size: 11px; color: var(--mist); letter-spacing: 1px; text-transform: uppercase; }
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { background: var(--gold); color: var(--dark); }
 
-  /* Panels */
-  .panel{padding:14px}
+  .hero-content {
+    text-align: center;
+    padding: 60px 20px 80px;
+    position: relative; z-index: 2;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(232,168,32,0.4);
+    padding: 5px 18px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1.1;
+    color: var(--foam);
+    margin-bottom: 10px;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-sub {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(18px, 3vw, 26px);
+    color: var(--mist);
+    margin-bottom: 24px;
+  }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 48px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--gold); display: block; }
+  .stat-label { font-size: 12px; color: var(--mist); text-transform: uppercase; letter-spacing: 1px; }
 
-  /* Modal */
-  .modal{width:92%;padding:20px 16px;margin:0 auto;max-height:90vh}
+  /* ── STARS ── */
+  .stars { color: var(--gold); font-size: 20px; letter-spacing: 3px; }
+  .stars.sm { font-size: 14px; letter-spacing: 2px; }
 
-  /* Tables - horizontal scroll */
-  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  table{min-width:500px}
+  /* ── REVIEW FORM ── */
+  .section { padding: 60px 20px; max-width: 900px; margin: 0 auto; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; color: var(--foam);
+    margin-bottom: 8px;
+  }
+  .section-title span { color: var(--gold); }
+  .section-sub { color: var(--mist); font-size: 14px; margin-bottom: 36px; }
 
-  /* Client row stacking */
-  .client-row{flex-wrap:wrap}
-  .cactions{width:100%;margin-top:8px}
+  .form-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 36px;
+    backdrop-filter: blur(8px);
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  @media(max-width:600px){ .form-row { grid-template-columns: 1fr; } }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-group label { font-size: 13px; color: var(--mist); letter-spacing: 0.5px; }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    color: var(--foam);
+    padding: 12px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--gold); }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+  .form-group select option { background: var(--ocean); }
 
-  /* Metric values slightly smaller */
-  .metric-value{font-size:22px}
+  .star-picker { display: flex; gap: 8px; margin-top: 4px; }
+  .star-picker span {
+    font-size: 28px; cursor: pointer;
+    filter: grayscale(1) brightness(0.5);
+    transition: filter 0.15s, transform 0.1s;
+    user-select: none;
+  }
+  .star-picker span.lit { filter: none; }
+  .star-picker span:hover { transform: scale(1.2); }
 
-  /* Buttons */
-  .btn{padding:8px 14px}
-  .btn-block{width:100%}
+  .submit-btn {
+    width: 100%;
+    margin-top: 24px;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--gold), #c97a10);
+    border: none; border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px; font-weight: 600;
+    color: var(--dark);
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    letter-spacing: 0.5px;
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
 
-  /* Page header */
-  .page-header h2{font-size:17px}
-}
+  /* ── REVIEWS LIST ── */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .review-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+  .review-card.featured { border-color: rgba(232,168,32,0.4); background: rgba(232,168,32,0.06); }
+  .review-card.featured::before {
+    content: '⭐ Featured';
+    position: absolute; top: -10px; right: 16px;
+    background: var(--gold); color: var(--dark);
+    font-size: 10px; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .reviewer-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .reviewer-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--coral));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 18px; color: var(--dark);
+    flex-shrink: 0;
+  }
+  .reviewer-info strong { display: block; font-size: 14px; color: var(--foam); }
+  .reviewer-info span { font-size: 12px; color: var(--mist); }
+  .review-text { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.6; margin-top: 10px; }
+  .review-dish {
+    margin-top: 12px;
+    display: inline-block;
+    background: rgba(232,168,32,0.15);
+    border: 1px solid rgba(232,168,32,0.3);
+    border-radius: 20px;
+    font-size: 11px; color: var(--gold);
+    padding: 3px 12px;
+  }
+  .review-date { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 10px; }
+
+  .no-reviews {
+    text-align: center; padding: 60px 20px;
+    color: var(--mist); font-size: 15px;
+  }
+  .no-reviews .emoji { font-size: 40px; display: block; margin-bottom: 12px; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: #1a7a4a; color: #fff;
+    padding: 14px 28px; border-radius: 40px;
+    font-size: 14px; font-weight: 500;
+    transition: transform 0.4s ease;
+    z-index: 9999;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: #b03030; }
+
+  /* ── ADMIN PAGE ── */
+  .admin-wrap {
+    min-height: 100vh;
+    background: #06192e;
+  }
+  .admin-nav {
+    background: rgba(6,25,46,0.95);
+    backdrop-filter: blur(10px);
+    padding: 16px 36px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 2px solid var(--gold);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .admin-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; color: var(--gold);
+  }
+  .admin-subtitle { font-size: 12px; color: var(--mist); margin-top: 2px; }
+  .admin-content { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+  .admin-stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px; margin-bottom: 36px;
+  }
+  .admin-stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 20px 24px;
+    text-align: center;
+  }
+  .admin-stat-card .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; color: var(--gold); display: block;
+  }
+  .admin-stat-card .lbl { font-size: 12px; color: var(--mist); margin-top: 4px; }
+
+  .admin-table-wrap {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; overflow: hidden;
+  }
+  .admin-table-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .admin-table-header h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--foam); }
+  .filter-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .filter-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--mist); font-size: 12px;
+    padding: 6px 16px; border-radius: 20px; cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .filter-btn.active, .filter-btn:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+
+  .admin-table { width: 100%; border-collapse: collapse; }
+  .admin-table th {
+    text-align: left; padding: 14px 20px;
+    font-size: 11px; color: var(--mist);
+    text-transform: uppercase; letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.2);
+  }
+  .admin-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    vertical-align: middle;
+    font-size: 13px; color: rgba(255,255,255,0.8);
+  }
+  .admin-table tr:last-child td { border-bottom: none; }
+  .admin-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+  .status-badge {
+    display: inline-block;
+    padding: 3px 12px; border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+  }
+  .status-badge.pending { background: rgba(224,90,43,0.2); color: #e05a2b; border: 1px solid rgba(224,90,43,0.3); }
+  .status-badge.approved { background: rgba(26,122,74,0.2); color: #4caf82; border: 1px solid rgba(26,122,74,0.3); }
+  .status-badge.featured { background: rgba(232,168,32,0.2); color: var(--gold); border: 1px solid rgba(232,168,32,0.3); }
+
+  .action-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .act-btn {
+    padding: 5px 12px; border-radius: 8px;
+    font-size: 11px; font-weight: 600;
+    border: none; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: opacity 0.2s;
+  }
+  .act-btn:hover { opacity: 0.8; }
+  .act-btn.approve { background: #1a7a4a; color: #fff; }
+  .act-btn.feature { background: var(--gold); color: var(--dark); }
+  .act-btn.delete { background: #8b2020; color: #fff; }
+  .act-btn.unapprove { background: #444; color: #ccc; }
+
+  .admin-login {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(ellipse at center, #0d3358 0%, #06192e 70%);
+  }
+  .login-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(232,168,32,0.3);
+    border-radius: 20px; padding: 48px 40px;
+    width: 100%; max-width: 380px; text-align: center;
+  }
+  .login-box h2 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--foam); margin: 16px 0 6px; }
+  .login-box p { color: var(--mist); font-size: 13px; margin-bottom: 30px; }
+  .login-input {
+    width: 100%; margin-bottom: 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px; color: var(--foam);
+    padding: 13px 16px; font-size: 14px;
+    font-family: 'Inter', sans-serif; outline: none;
+    transition: border-color 0.2s;
+  }
+  .login-input:focus { border-color: var(--gold); }
+  .login-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--gold), #c97a10);
+    border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 600;
+    color: var(--dark); cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    margin-top: 6px;
+    transition: opacity 0.2s;
+  }
+  .login-btn:hover { opacity: 0.9; }
+  .login-error { color: #e05a2b; font-size: 13px; margin-top: 12px; display: none; }
+
+  .back-link {
+    background: transparent; border: none;
+    color: var(--mist); font-size: 13px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+    text-decoration: underline; margin-top: 18px;
+    display: block;
+  }
+  .back-link:hover { color: var(--foam); }
+
+  .review-full-text {
+    max-width: 220px; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  @media(max-width:700px){
+    .admin-table thead { display: none; }
+    .admin-table tr { display: block; margin-bottom: 16px; background: rgba(255,255,255,0.04); border-radius: 12px; }
+    .admin-table td { display: flex; justify-content: space-between; padding: 10px 16px; font-size: 12px; }
+    .admin-table td::before { content: attr(data-label); color: var(--mist); font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    .nav { padding: 14px 20px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ════════ LOGIN SCREEN ════════ -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-brand">
-      <h1>🏦 Enomy-Finances</h1>
-      <p>Secure Staff & Client Portal</p>
-    </div>
-    <div class="role-tabs">
-      <div class="role-tab active" onclick="setRole('staff')">👔 Staff</div>
-      <div class="role-tab" onclick="setRole('to')">🔑 CTO</div>
-      <div class="role-tab" onclick="setRole('client')">👤 Client</div>
-    </div>
-    <div class="demo-hint" id="demo-hint">
-      <strong>Demo credentials:</strong><br>
-      Username: <strong>staff1</strong> &nbsp;|&nbsp; Password: <strong>pass123</strong>
-    </div>
-    <div class="field">
-      <label>Username</label>
-      <input type="text" id="login-user" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="login-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <button class="btn-login" onclick="doLogin()">Sign In</button>
-    <div class="login-error" id="login-error">Invalid username or password.</div>
-  </div>
-</div>
-
-<!-- ════════ HAMBURGER ════════ -->
-<button class="hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
-<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
-
-<!-- ════════ APP ════════ -->
-<div id="app">
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-name">Enomy-Finances</div>
-      <div class="brand-role" id="sb-role">Staff Portal</div>
-    </div>
-    <div id="sidebar-nav"></div>
-    <div class="sidebar-footer">
-      <div class="user-pill">
-        <div class="avatar" id="sb-av">?</div>
-        <div class="user-info">
-          <div class="uname" id="sb-name">User</div>
-          <div class="urole" id="sb-urole">Role</div>
+<!-- ══════════════════════════════════════
+     PAGE 1: CUSTOMER REVIEW PAGE
+══════════════════════════════════════ -->
+<div id="page-reviews" class="page active">
+  <div class="hero">
+    <nav class="nav">
+      <div class="nav-logo">
+        <div class="logo-icon">🌊</div>
+        <div class="logo-text">
+          <strong>Sun Coast</strong>
+          <span>Seafood & Grill · Kalkudah</span>
         </div>
       </div>
-      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+      <button class="nav-btn" onclick="showAdminLogin()">Admin Login</button>
+    </nav>
+    <div class="hero-content">
+      <div class="hero-tag">📍 Batticaloa Road, Kalkudah</div>
+      <h1 class="hero-title">What Our Guests<br><span>Are Saying</span></h1>
+      <p class="hero-sub">Fresh Sea. Great Food. Good Vibes.</p>
+      <div class="stars">★★★★★</div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num" id="stat-total">0</span>
+          <span class="stat-label">Reviews</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" id="stat-avg">–</span>
+          <span class="stat-label">Avg Rating</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" id="stat-five">0</span>
+          <span class="stat-label">5-Star Reviews</span>
+        </div>
+      </div>
     </div>
-  </aside>
+  </div>
 
-  <!-- MAIN -->
-  <div class="main-area">
-    <div class="topbar">
-      <div class="topbar-title" id="topbar-title">Dashboard</div>
-      <div class="topbar-time" id="topbar-time"></div>
+  <!-- Write Review -->
+  <div class="section">
+    <h2 class="section-title">Share Your <span>Experience</span></h2>
+    <p class="section-sub">Dined with us? We'd love to hear from you!</p>
+    <div class="form-card">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name *</label>
+          <input id="r-name" type="text" placeholder="e.g. Priya Kumaran"/>
+        </div>
+        <div class="form-group">
+          <label>Dish / Item Ordered</label>
+          <input id="r-dish" type="text" placeholder="e.g. Grilled Lobster, Biryani"/>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:20px">
+        <label>Your Rating *</label>
+        <div class="star-picker" id="star-picker">
+          <span data-val="1">★</span>
+          <span data-val="2">★</span>
+          <span data-val="3">★</span>
+          <span data-val="4">★</span>
+          <span data-val="5">★</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Your Review *</label>
+        <textarea id="r-text" placeholder="Tell others about the food, atmosphere, service…"></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitReview()">🌊 Submit My Review</button>
     </div>
-    <div class="content" id="main-content"></div>
+  </div>
+
+  <!-- Reviews List -->
+  <div class="section" style="padding-top:0">
+    <h2 class="section-title">Guest <span>Reviews</span></h2>
+    <p class="section-sub" id="reviews-count-label">Be the first to leave a review!</p>
+    <div class="reviews-grid" id="reviews-list"></div>
+    <div class="no-reviews" id="no-reviews-msg">
+      <span class="emoji">🦐</span>
+      No reviews yet — be the first!
+    </div>
   </div>
 </div>
 
-<!-- ════════ MODAL ════════ -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="modal-title"></div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+
+<!-- ══════════════════════════════════════
+     PAGE 2: ADMIN LOGIN
+══════════════════════════════════════ -->
+<div id="page-admin-login" class="page">
+  <div class="admin-login">
+    <div class="login-box">
+      <div style="font-size:48px">🌊</div>
+      <h2>Admin Portal</h2>
+      <p>Sun Coast Seafood & Grill — Manage Reviews</p>
+      <input class="login-input" type="text" id="admin-user" placeholder="Username" autocomplete="off"/>
+      <input class="login-input" type="password" id="admin-pass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <button class="login-btn" onclick="doLogin()">Sign In</button>
+      <div class="login-error" id="login-error">❌ Incorrect credentials. Try again.</div>
+      <button class="back-link" onclick="showPage('page-reviews')">← Back to Reviews</button>
     </div>
-    <div id="modal-body"></div>
   </div>
 </div>
+
+
+<!-- ══════════════════════════════════════
+     PAGE 3: ADMIN DASHBOARD
+══════════════════════════════════════ -->
+<div id="page-admin" class="page">
+  <div class="admin-wrap">
+    <div class="admin-nav">
+      <div>
+        <div class="admin-title">🌊 Admin Dashboard</div>
+        <div class="admin-subtitle">Sun Coast Seafood & Grill — Review Management</div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <button class="nav-btn" onclick="showPage('page-reviews')" style="font-size:12px">View Public Page</button>
+        <button class="nav-btn" onclick="logout()" style="font-size:12px;border-color:#e05a2b;color:#e05a2b">Logout</button>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <div class="admin-stats">
+        <div class="admin-stat-card">
+          <span class="num" id="a-total">0</span>
+          <div class="lbl">Total Reviews</div>
+        </div>
+        <div class="admin-stat-card">
+          <span class="num" id="a-pending" style="color:#e05a2b">0</span>
+          <div class="lbl">Pending Approval</div>
+        </div>
+        <div class="admin-stat-card">
+          <span class="num" id="a-approved" style="color:#4caf82">0</span>
+          <div class="lbl">Approved</div>
+        </div>
+        <div class="admin-stat-card">
+          <span class="num" id="a-featured" style="color:var(--gold)">0</span>
+          <div class="lbl">Featured</div>
+        </div>
+        <div class="admin-stat-card">
+          <span class="num" id="a-avg">–</span>
+          <div class="lbl">Avg Rating</div>
+        </div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <h3>All Reviews</h3>
+          <div class="filter-row">
+            <button class="filter-btn active" onclick="filterAdmin('all', this)">All</button>
+            <button class="filter-btn" onclick="filterAdmin('pending', this)">Pending</button>
+            <button class="filter-btn" onclick="filterAdmin('approved', this)">Approved</button>
+            <button class="filter-btn" onclick="filterAdmin('featured', this)">Featured</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Reviewer</th>
+                <th>Rating</th>
+                <th>Dish</th>
+                <th>Review</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════════════
-// DATA STORE
-// ════════════════════════════════════════
-const USERS = {
-  staff: [
-    {id:'s1', username:'staff1', password:'pass123', name:'Alex Johnson', role:'staff', initials:'AJ', color:'#2557a7'},
-    {id:'s2', username:'staff2', password:'pass123', name:'Beth Clarke', role:'staff', initials:'BC', color:'#1a6b3a'}
-  ],
-  to: [
-    {id:'t1', username:'to1', password:'pass123', name:'Thushann', role:'to', initials:'CD', color:'#7a4f00'},
-    {id:'t2', username:'to2', password:'pass123', name:'David Evans', role:'to', initials:'DE', color:'#4a006b'}
-  ],
-  client: [
-    {id:'c1', username:'client1', password:'pass123', name:'Sarah Kane', role:'client', initials:'SK', color:'#8b1a1a', portfolio:'Savings Plan Plus', lump:5000, monthly:200},
-    {id:'c2', username:'client2', password:'pass123', name:'Tom Brennan', role:'client', initials:'TB', color:'#1a3a6b', portfolio:'Basic Savings', lump:0, monthly:150},
-    {id:'c3', username:'client3', password:'pass123', name:'Maria Lopez', role:'client', initials:'ML', color:'#1a6b3a', portfolio:'Managed Stock Investments', lump:10000, monthly:500}
-  ]
-};
+// ── DATA STORE ──
+let reviews = JSON.parse(localStorage.getItem('sc_reviews') || '[]');
+let selectedRating = 0;
+const ADMIN_CREDS = { user: 'suncoast', pass: 'admin123' };
+let adminFilter = 'all';
 
-const FX_RATES = {GBP:1, USD:1.2705, EUR:1.1683, BRL:7.22, JPY:191.4, TRY:43.1};
-const FX_SYMBOLS = {GBP:'£', USD:'$', EUR:'€', BRL:'R$', JPY:'¥', TRY:'₺'};
+function save() { localStorage.setItem('sc_reviews', JSON.stringify(reviews)); }
 
-const INV_PLANS = [
-  {name:'Basic Savings Plan', minR:0.012, maxR:0.024, fee:0.0025, maxYr:20000, minMonthly:50, minLump:0, tax1:0, taxThr1:null, tax2:0, taxThr2:null, desc:'1.2–2.4% p.a. · No min lump sum · Max £20,000/yr'},
-  {name:'Savings Plan Plus', minR:0.030, maxR:0.055, fee:0.003, maxYr:30000, minMonthly:50, minLump:300, tax1:0.10, taxThr1:12000, tax2:0, taxThr2:null, desc:'3–5.5% p.a. · £300 min lump · Max £30,000/yr'},
-  {name:'Managed Stock Investments', minR:0.040, maxR:0.230, fee:0.013, maxYr:Infinity, minMonthly:150, minLump:1000, tax1:0.10, taxThr1:12000, tax2:0.20, taxThr2:40000, desc:'4–23% p.a. · £1,000 min lump · Unlimited'}
-];
-
-let CLIENTS = [
-  {id:'c1', name:'Sarah Kane', email:'sarah.kane@email.com', phone:'07812 345 678', status:'active', plan:'Savings Plan Plus', lump:5000, monthly:200, notes:'Prefers email contact', joinDate:'2023-06-15'},
-  {id:'c2', name:'Tom Brennan', email:'tom.brennan@email.com', phone:'07923 456 789', status:'active', plan:'Basic Savings Plan', lump:0, monthly:150, notes:'Call before 5pm', joinDate:'2023-09-02'},
-  {id:'c3', name:'Maria Lopez', email:'m.lopez@email.com', phone:'07634 567 890', status:'pending', plan:'Managed Stock Investments', lump:10000, monthly:500, notes:'High net worth client', joinDate:'2024-01-20'},
-  {id:'c4', name:'James Reid', email:'j.reid@email.com', phone:'07745 678 901', status:'review', plan:'Savings Plan Plus', lump:2000, monthly:300, notes:'Portfolio rebalance needed', joinDate:'2022-11-08'},
-  {id:'c5', name:'Priya Nair', email:'p.nair@email.com', phone:'07856 789 012', status:'active', plan:'Managed Stock Investments', lump:15000, monthly:800, notes:'Risk-tolerant investor', joinDate:'2021-03-14'},
-  {id:'c6', name:'David Wong', email:'d.wong@email.com', phone:'07967 890 123', status:'pending', plan:'Basic Savings Plan', lump:0, monthly:100, notes:'New client onboarding', joinDate:'2024-04-30'}
-];
-
-let TRANSACTIONS = [
-  {id:'t001', client:'Sarah Kane', type:'FX', detail:'£1,200 → USD ($1,524.60)', fee:'£40.82', date:'2026-05-03 10:32'},
-  {id:'t002', client:'Tom Brennan', type:'Investment', detail:'Savings Plan Plus opened', fee:'£0', date:'2026-05-03 09:15'},
-  {id:'t003', client:'Maria Lopez', type:'FX', detail:'EUR 800 → GBP (£684.59)', fee:'£21.60', date:'2026-05-02 16:48'},
-  {id:'t004', client:'James Reid', type:'Investment', detail:'Portfolio rebalance', fee:'£12.50', date:'2026-05-02 14:20'},
-  {id:'t005', client:'Priya Nair', type:'FX', detail:'¥45,000 → GBP (£235.15)', fee:'£8.23', date:'2026-05-01 11:05'}
-];
-
-let SAVED_QUOTES = [
-  {id:'q001', clientId:'c1', type:'Investment', plan:'Savings Plan Plus', lump:5000, monthly:200, date:'2026-04-28', summary:'1yr: £6,812–£7,520 | 5yr: £19,405–£23,800'},
-  {id:'q002', clientId:'c1', type:'FX', from:'GBP', to:'USD', amount:1200, result:'$1,524.60', date:'2026-05-03'},
-  {id:'q003', clientId:'c3', type:'Investment', plan:'Managed Stock Investments', lump:10000, monthly:500, date:'2026-04-15', summary:'1yr: £18,240–£24,890 | 5yr: £52,000–£138,000'}
-];
-
-let STAFF_LIST = [
-  {id:'s1', name:'Alex Johnson', username:'staff1', role:'Financial Advisor', status:'active', email:'alex.j@enomy.com', clients:3},
-  {id:'s2', name:'Beth Clarke', username:'staff2', role:'Investment Analyst', status:'active', email:'beth.c@enomy.com', clients:2}
-];
-
-let currentUser = null;
-let currentRole = 'staff';
-let selInv = 0;
-
-// ════════════════════════════════════════
-// LOGIN
-// ════════════════════════════════════════
-function setRole(role) {
-  currentRole = role;
-  document.querySelectorAll('.role-tab').forEach((t,i)=>t.classList.remove('active'));
-  document.querySelectorAll('.role-tab')[['staff','to','client'].indexOf(role)].classList.add('active');
-  const hints = {
-    staff:'Username: <strong>staff1</strong> &nbsp;|&nbsp; Password: <strong>pass123</strong>',
-    to:'Username: <strong>to1</strong> &nbsp;|&nbsp; Password: <strong>pass123</strong>',
-    client:'Username: <strong>client1</strong> &nbsp;|&nbsp; Password: <strong>pass123</strong>'
-  };
-  document.getElementById('demo-hint').innerHTML = '<strong>Demo credentials:</strong><br>' + hints[role];
-  document.getElementById('login-user').value = '';
-  document.getElementById('login-pass').value = '';
+// seed demo reviews if empty
+if (reviews.length === 0) {
+  const demos = [
+    { id: 1, name: 'Amara Silva', dish: 'Grilled Lobster', rating: 5, text: 'Absolutely incredible! The lobster was fresh off the coast, perfectly seasoned and grilled. The ambience with the warm lights made it so special. Will definitely be back!', date: '2026-06-10', status: 'featured' },
+    { id: 2, name: 'Rahul Menon', dish: 'Chicken Biryani (Friday Special)', rating: 5, text: 'The Friday biryani deal is unbeatable! Rs.2600 for two people with free Coca-Cola — amazing value. The biryani was aromatic and full of flavour.', date: '2026-06-14', status: 'approved' },
+    { id: 3, name: 'Fathima Nizar', dish: 'Prawn Platter', rating: 4, text: 'Really good seafood. The prawns were huge and well-cooked. Friendly staff and a beautiful open-air setting by the coast. Loved every bite!', date: '2026-06-17', status: 'approved' },
+    { id: 4, name: 'Kavya Jeyarajah', dish: 'Fried Rice + Seafood', rating: 5, text: 'Best coastal dining experience in Kalkudah! Everything was fresh. The decor with fairy lights and the sound of the sea in the background is simply magical.', date: '2026-06-19', status: 'approved' },
+  ];
+  reviews = demos;
+  save();
 }
 
-function doLogin() {
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value.trim();
-  const user = (USERS[currentRole]||[]).find(x=>x.username===u && x.password===p);
-  if (!user) { document.getElementById('login-error').style.display='block'; return; }
-  currentUser = user;
-  document.getElementById('login-error').style.display='none';
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('app').classList.add('visible');
-  initApp();
+// ── PAGES ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
 }
 
-function doLogout() {
-  currentUser = null;
-  document.getElementById('app').classList.remove('visible');
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('login-user').value='';
-  document.getElementById('login-pass').value='';
-}
+function showAdminLogin() { showPage('page-admin-login'); }
 
-// ════════════════════════════════════════
-// APP INIT
-// ════════════════════════════════════════
-function initApp() {
-  document.getElementById('sb-av').textContent = currentUser.initials;
-  document.getElementById('sb-av').style.background = currentUser.color;
-  document.getElementById('sb-name').textContent = currentUser.name;
-  document.getElementById('sb-urole').textContent = roleLabel(currentUser.role);
-  document.getElementById('sb-role').textContent = roleLabel(currentUser.role)+' Portal';
-  buildNav();
-  updateTime();
-  setInterval(updateTime, 30000);
-  navigateTo(defaultPage());
-}
-
-function roleLabel(r) {
-  return {staff:'Financial Staff', to:'Technical Officer', client:'Client'}[r]||r;
-}
-
-function defaultPage() {
-  return {staff:'dashboard', to:'to-dashboard', client:'client-dashboard'}[currentUser.role];
-}
-
-function updateTime() {
-  document.getElementById('topbar-time').textContent = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',weekday:'short',day:'numeric',month:'short'});
-}
-
-const NAV_STAFF = [
-  {id:'dashboard', icon:'📊', label:'Dashboard'},
-  {id:'currency', icon:'💱', label:'Currency Converter'},
-  {id:'savings', icon:'📈', label:'Savings & Investments'},
-  {id:'clients', icon:'👥', label:'Clients'},
-  {id:'transactions', icon:'🗂️', label:'Transactions'},
-  {id:'quotes', icon:'📋', label:'Saved Quotes'},
-  {id:'profile', icon:'👤', label:'My Profile'}
-];
-const NAV_TO = [
-  {id:'to-dashboard', icon:'🖥️', label:'Dashboard'},
-  {id:'to-staff', icon:'👔', label:'Staff Management'},
-  {id:'to-clients', icon:'👥', label:'All Clients'},
-  {id:'to-transactions', icon:'🗂️', label:'All Transactions'},
-  {id:'to-system', icon:'⚙️', label:'System Settings'},
-  {id:'to-reports', icon:'📊', label:'Reports'},
-  {id:'profile', icon:'👤', label:'My Profile'}
-];
-const NAV_CLIENT = [
-  {id:'client-dashboard', icon:'🏠', label:'My Overview'},
-  {id:'client-currency', icon:'💱', label:'Currency Converter'},
-  {id:'client-savings', icon:'📈', label:'Savings & Investments'},
-  {id:'client-portfolio', icon:'💼', label:'My Portfolio'},
-  {id:'client-quotes', icon:'📋', label:'My Quotes'},
-  {id:'client-transactions', icon:'🧾', label:'My Transactions'},
-  {id:'profile', icon:'👤', label:'My Profile'}
-];
-
-function buildNav() {
-  const map = {staff:NAV_STAFF, to:NAV_TO, client:NAV_CLIENT};
-  const items = map[currentUser.role]||[];
-  let html = '<div class="nav-group-label">Menu</div>';
-  items.forEach(item=>{
-    html += `<div class="nav-item" id="nav-${item.id}" onclick="navigateTo('${item.id}')">
-      <span class="nav-icon">${item.icon}</span><span>${item.label}</span></div>`;
-  });
-  document.getElementById('sidebar-nav').innerHTML = html;
-}
-
-function navigateTo(pageId) {
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const nav = document.getElementById('nav-'+pageId);
-  if (nav) nav.classList.add('active');
-  const labels = {};
-  [...NAV_STAFF,...NAV_TO,...NAV_CLIENT].forEach(n=>labels[n.id]=n.label);
-  document.getElementById('topbar-title').textContent = labels[pageId]||pageId;
-  renderPage(pageId);
-}
-
-function renderPage(pageId) {
-  const el = document.getElementById('main-content');
-  const pages = {
-    'dashboard': renderStaffDashboard,
-    'currency': ()=>renderCurrency('staff'),
-    'savings': ()=>renderSavings('staff'),
-    'clients': renderClients,
-    'transactions': renderTransactions,
-    'quotes': renderStaffQuotes,
-    'to-dashboard': renderTODashboard,
-    'to-staff': renderTOStaff,
-    'to-clients': renderTOClients,
-    'to-transactions': renderTOTransactions,
-    'to-system': renderTOSystem,
-    'to-reports': renderTOReports,
-    'client-dashboard': renderClientDashboard,
-    'client-currency': ()=>renderCurrency('client'),
-    'client-savings': ()=>renderSavings('client'),
-    'client-portfolio': renderClientPortfolio,
-    'client-quotes': renderClientQuotes,
-    'client-transactions': renderClientTransactions,
-    'profile': renderProfile
-  };
-  if (pages[pageId]) { el.innerHTML=''; pages[pageId](); }
-}
-
-// ════════════════════════════════════════
-// STAFF PAGES
-// ════════════════════════════════════════
-function renderStaffDashboard() {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>Welcome back, ${currentUser.name.split(' ')[0]} 👋</h2><p>Here's your financial overview for today.</p></div>
-  <div class="metrics">
-    <div class="metric"><div class="metric-label">Active Clients</div><div class="metric-value">248</div><div class="metric-sub up">▲ +12 this month</div></div>
-    <div class="metric"><div class="metric-label">Transactions Today</div><div class="metric-value">34</div><div class="metric-sub up">▲ +8 vs yesterday</div></div>
-    <div class="metric"><div class="metric-label">AUM (GBP)</div><div class="metric-value">£4.2M</div><div class="metric-sub up">▲ +2.1% this week</div></div>
-    <div class="metric"><div class="metric-label">Pending Reviews</div><div class="metric-value">7</div><div class="metric-sub down">▼ 3 overdue</div></div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-    <div class="panel">
-      <div class="panel-title">📋 Recent Activity</div>
-      <div class="activity-feed">
-        ${TRANSACTIONS.slice(0,5).map(t=>`<div class="activity-item">
-          <div class="act-dot" style="background:${t.type==='FX'?'#2557a7':'#1a6b3a'}"></div>
-          <div class="act-content"><strong>${t.client}</strong> — ${t.detail}</div>
-          <div class="act-time">${t.date.split(' ')[1]||t.date.slice(5)}</div>
-        </div>`).join('')}
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">⚠️ Clients Needing Attention</div>
-      ${CLIENTS.filter(c=>c.status!=='active').map(c=>`<div class="client-row">
-        <div class="cav" style="background:${statusColor(c.status).bg};color:${statusColor(c.status).fg}">${initials(c.name)}</div>
-        <div class="cinfo"><div class="cname">${c.name}</div><div class="cdetail">${c.plan}</div></div>
-        <span class="pill pill-${c.status}">${c.status}</span>
-      </div>`).join('')}
-    </div>
-  </div>`;
-}
-
-function renderClients() {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>Client Management</h2><p>Manage all client accounts and portfolios.</p></div>
-  <div class="panel">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div class="panel-title" style="margin:0">👥 All Clients</div>
-      <button class="btn btn-primary btn-sm" onclick="openAddClient()">+ Add Client</button>
-    </div>
-    <div id="client-list-container">${buildClientList()}</div>
-  </div>`;
-}
-
-function buildClientList() {
-  return CLIENTS.map(c=>`<div class="client-row">
-    <div class="cav" style="background:${statusColor(c.status).bg};color:${statusColor(c.status).fg}">${initials(c.name)}</div>
-    <div class="cinfo">
-      <div class="cname">${c.name}</div>
-      <div class="cdetail">${c.email} · ${c.phone}</div>
-      <div class="cdetail" style="margin-top:2px">${c.plan}</div>
-    </div>
-    <div class="cactions">
-      <span class="pill pill-${c.status}">${c.status}</span>
-      <button class="btn btn-outline btn-sm" onclick="viewClient('${c.id}')">View</button>
-      <button class="btn btn-sm" style="background:#f0f4fb;color:var(--primary)" onclick="editClient('${c.id}')">Edit</button>
-    </div>
-  </div>`).join('');
-}
-
-function renderTransactions() {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>Transaction History</h2><p>All recent client transactions.</p></div>
-  <div class="panel">
-    <div class="tbl-wrap"><table>
-      <thead><tr><th>Ref</th><th>Client</th><th>Type</th><th>Details</th><th>Fee</th><th>Date/Time</th></tr></thead>
-      <tbody>${TRANSACTIONS.map(t=>`<tr>
-        <td><code style="font-size:12px">${t.id}</code></td>
-        <td><strong>${t.client}</strong></td>
-        <td><span class="pill ${t.type==='FX'?'pill-review':'pill-active'}">${t.type}</span></td>
-        <td>${t.detail}</td>
-        <td style="color:var(--danger)">${t.fee}</td>
-        <td style="font-size:12px;color:var(--muted)">${t.date}</td>
-      </tr>`).join('')}</tbody>
-    </table></div>
-  </div>`;
-}
-
-function renderStaffQuotes() {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>Saved Quotes</h2><p>All generated quotes across clients.</p></div>
-  <div class="panel">
-    ${SAVED_QUOTES.map(q=>{
-      const c = CLIENTS.find(x=>x.id===q.clientId);
-      return `<div class="quote-card">
-        <div class="quote-card-header">
-          <div><div class="quote-type">${q.type === 'Investment' ? '📈' : '💱'} ${q.type === 'Investment' ? q.plan : 'FX: '+q.from+'→'+q.to}</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:3px">Client: ${c?c.name:'Unknown'}</div></div>
-          <div class="quote-date">${q.date}</div>
-        </div>
-        ${q.summary ? `<div style="font-size:12px;color:var(--primary)">${q.summary}</div>` : `<div style="font-size:12px;color:var(--muted)">Amount: ${q.amount} ${q.from} → ${q.result}</div>`}
-      </div>`;
-    }).join('')}
-  </div>`;
-}
-
-// ════════════════════════════════════════
-// TO PAGES
-// ════════════════════════════════════════
-function renderTODashboard() {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>Technical Officer Dashboard</h2><p>Full system oversight and administration.</p></div>
-  <div class="metrics">
-    <div class="metric"><div class="metric-label">Total Clients</div><div class="metric-value">${CLIENTS.length}</div><div class="metric-sub up">▲ System registered</div></div>
-    <div class="metric"><div class="metric-label">Active Staff</div><div class="metric-value">${STAFF_LIST.filter(s=>s.status==='active').length}</div><div class="metric-sub up">▲ All online</div></div>
-    <div class="metric"><div class="metric-label">Transactions</div><div class="metric-value">${TRANSACTIONS.length}</div><div class="metric-sub">This week</div></div>
-    <div class="metric"><div class="metric-label">System Status</div><div class="metric-value" style="color:var(--success);font-size:18px">● Online</div><div class="metric-sub up">All services running</div></div>
-    <div class="metric"><div class="metric-label">Saved Quotes</div><div class="metric-value">${SAVED_QUOTES.length}</div><div class="metric-sub">Total generated</div></div>
-    <div class="metric"><div class="metric-label">Pending Reviews</div><div class="metric-value">${CLIENTS.filter(c=>c.status!=='active').length}</div><div class="metric-sub down">▼ Needs attention</div></div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-    <div class="panel">
-      <div class="panel-title">👔 Staff Overview</div>
-      ${STAFF_LIST.map(s=>`<div class="client-row">
-        <div class="cav" style="background:#e8f0fb;color:#2557a7">${initials(s.name)}</div>
-        <div class="cinfo"><div class="cname">${s.name}</div><div class="cdetail">${s.role} · ${s.clients} clients</div></div>
-        <span class="pill pill-active">${s.status}</span>
-      </div>`).join('')}
-    </div>
-    <div class="panel">
-      <div class="panel-title">🔔 System Alerts</div>
-      <div class="alert alert-info" style="display:block">ℹ️ System backup scheduled for 02:00 tonight.</div>
-      <div class="alert alert-danger" style="display:block">⚠️ ${CLIENTS.filter(c=>c.status==='pending').length} clients pending onboarding review.</div>
-      <div class="alert alert-success" style="display:block">✅ All database connections healthy.</div>
-      <div class="alert alert-success" style="display:block">✅ FX rate feeds updating normally.</div>
-    </div>
-  </div>`;
-}
-
-function renderTOStaff() {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>Staff Management</h2><p>Manage all staff accounts and roles.</p></div>
-  <div class="panel">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div class="panel-title" style="margin:0">👔 Staff Accounts</div>
-      <button class="btn btn-primary btn-sm" onclick="openAddStaff()">+ Add Staff</button>
-    </div>
-    <div class="tbl-wrap"><table>
-      <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Clients</th><th>Status</th><th>Actions</th></tr></thead>
-      <tbody id="staff-tbody">${buildStaffTable()}</tbody>
-    </table></div>
-  </div>`;
-}
-
-function buildStaffTable() {
-  return STAFF_LIST.map(s=>`<tr>
-    <td><strong>${s.name}</strong><br><span style="font-size:12px;color:var(--muted)">${s.email}</span></td>
-    <td><code>${s.username}</code></td>
-    <td>${s.role}</td>
-    <td>${s.clients}</td>
-    <td><span class="pill pill-${s.status}">${s.status}</span></td>
-    <td>
-      <button class="btn btn-outline btn-sm" onclick="editStaff('${s.id}')">Edit</button>
-      <button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="removeStaff('${s.id}')">Remove</button>
-    </td>
-  </tr>`).join('');
-}
-
-function renderTOClients() {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>All Clients (TO View)</h2><p>Complete client registry with full access controls.</p></div>
-  <div class="panel">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div class="panel-title" style="margin:0">👥 Client Registry</div>
-      <div style="display:flex;gap:8px">
-        <select onchange="filterClients(this.value)" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px">
-          <option value="">All statuses</option>
-          <option value="active">Active</option>
-          <option value="pending">Pending</option>
-          <option value="review">Review</option>
-        </select>
-        <button class="btn btn-primary btn-sm" onclick="openAddClient()">+ Add Client</button>
-      </div>
-    </div>
-    <div class="tbl-wrap"><table>
-      <thead><tr><th>Client</th><th>Contact</th><th>Plan</th><th>Monthly</th><th>Lump Sum</th><th>Status</th><th>Actions</th></tr></thead>
-      <tbody id="to-clients-tbody">${buildTOClientsTable(CLIENTS)}</tbody>
-    </table></div>
-  </div>`;
-}
-
-function buildTOClientsTable(list) {
-  return list.map(c=>`<tr>
-    <td><strong>${c.name}</strong><br><span style="font-size:12px;color:var(--muted)">Joined ${c.joinDate}</span></td>
-    <td style="font-size:12px">${c.email}<br>${c.phone}</td>
-    <td>${c.plan}</td>
-    <td>£${c.monthly}/mo</td>
-    <td>${c.lump?'£'+c.lump.toLocaleString():'N/A'}</td>
-    <td><span class="pill pill-${c.status}">${c.status}</span></td>
-    <td>
-      <button class="btn btn-outline btn-sm" onclick="viewClient('${c.id}')">View</button>
-      <button class="btn btn-sm" style="background:#f0f4fb;color:var(--primary);margin-left:4px" onclick="editClient('${c.id}')">Edit</button>
-      <select style="margin-left:4px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:11px" onchange="changeClientStatus('${c.id}',this.value)">
-        <option value="${c.status}" selected>${c.status}</option>
-        ${['active','pending','review'].filter(s=>s!==c.status).map(s=>`<option value="${s}">${s}</option>`).join('')}
-      </select>
-    </td>
-  </tr>`).join('');
-}
-
-function filterClients(status) {
-  const list = status ? CLIENTS.filter(c=>c.status===status) : CLIENTS;
-  document.getElementById('to-clients-tbody').innerHTML = buildTOClientsTable(list);
-}
-
-function changeClientStatus(id, status) {
-  const c = CLIENTS.find(x=>x.id===id);
-  if (c) { c.status = status; renderTOClients(); }
-}
-
-function renderTOTransactions() {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>All Transactions (TO View)</h2><p>Complete audit trail of all system transactions.</p></div>
-  <div class="panel">
-    <div class="panel-title">🗂️ Transaction Audit Log</div>
-    <div class="tbl-wrap"><table>
-      <thead><tr><th>Ref</th><th>Client</th><th>Type</th><th>Details</th><th>Fee Collected</th><th>Date/Time</th><th>Action</th></tr></thead>
-      <tbody>${TRANSACTIONS.map(t=>`<tr>
-        <td><code>${t.id}</code></td>
-        <td>${t.client}</td>
-        <td><span class="pill ${t.type==='FX'?'pill-review':'pill-active'}">${t.type}</span></td>
-        <td>${t.detail}</td>
-        <td style="color:var(--danger)">${t.fee}</td>
-        <td style="font-size:12px;color:var(--muted)">${t.date}</td>
-        <td><button class="btn btn-outline btn-sm" onclick="alert('Transaction ${t.id} details viewed by TO')">Audit</button></td>
-      </tr>`).join('')}</tbody>
-    </table></div>
-  </div>`;
-}
-
-function renderTOSystem() {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>System Settings</h2><p>Configure system parameters and infrastructure.</p></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-    <div class="panel">
-      <div class="panel-title">⚙️ FX Rate Configuration</div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Manually override indicative exchange rates (base: GBP)</p>
-      ${Object.entries(FX_RATES).filter(([k])=>k!=='GBP').map(([cur,rate])=>`
-        <div class="field"><label>${cur} / GBP</label>
-          <input type="number" id="rate-${cur}" value="${rate}" step="0.0001"
-            onchange="FX_RATES['${cur}']=parseFloat(this.value);showAlert('rate-saved','Rate ${cur} updated!')">
-        </div>`).join('')}
-      <div class="alert alert-success" id="rate-saved">✅ Rate saved successfully</div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">🔒 Security & Access</div>
-      <div class="field"><label>Session timeout (minutes)</label><input type="number" value="30"></div>
-      <div class="field"><label>Max failed logins</label><input type="number" value="5"></div>
-      <div class="field"><label>Password min length</label><input type="number" value="8"></div>
-      <button class="btn btn-primary btn-block" onclick="alert('Security settings saved')">Save Security Settings</button>
-      <div style="margin-top:16px" class="panel-title">📦 Database</div>
-      <button class="btn btn-outline btn-block" style="margin-bottom:8px" onclick="alert('Backup initiated at '+new Date().toLocaleTimeString())">Run Manual Backup</button>
-      <button class="btn btn-outline btn-block" onclick="alert('Diagnostic log exported')">Export Diagnostic Logs</button>
-    </div>
-    <div class="panel">
-      <div class="panel-title">📡 System Health</div>
-      ${[['FX Rate Feed','Online','active'],['Database Server','Online','active'],['Backup Server','Online','active'],['Auth Service','Online','active'],['Cache Layer','Online','active']].map(([name,status,pill])=>`
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0">
-          <span style="font-size:13px">${name}</span>
-          <span class="pill pill-${pill}">${status}</span>
-        </div>`).join('')}
-    </div>
-    <div class="panel">
-      <div class="panel-title">📜 Audit Log Settings</div>
-      <div class="field"><label>Log retention (days)</label><input type="number" value="90"></div>
-      <div class="field"><label>Alert email</label><input type="email" value="admin@enomy.com"></div>
-      <div class="field"><label>Error notification threshold</label>
-        <select><option>Any error</option><option>5+ errors/hour</option><option>Critical only</option></select>
-      </div>
-      <button class="btn btn-primary btn-block" onclick="alert('Audit settings saved')">Save Audit Settings</button>
-    </div>
-  </div>`;
-}
-
-function renderTOReports() {
-  const el = document.getElementById('main-content');
-  const byType = {};
-  TRANSACTIONS.forEach(t=>{ byType[t.type]=(byType[t.type]||0)+1; });
-  const byPlan = {};
-  CLIENTS.forEach(c=>{ byPlan[c.plan]=(byPlan[c.plan]||0)+1; });
-  el.innerHTML = `
-  <div class="page-header"><h2>System Reports</h2><p>Analytics and reporting for the TO.</p></div>
-  <div class="metrics">
-    <div class="metric"><div class="metric-label">Total Revenue (Est.)</div><div class="metric-value">£8,450</div><div class="metric-sub up">▲ +15% vs last month</div></div>
-    <div class="metric"><div class="metric-label">FX Transactions</div><div class="metric-value">${byType['FX']||0}</div><div class="metric-sub">This period</div></div>
-    <div class="metric"><div class="metric-label">Investment Txns</div><div class="metric-value">${byType['Investment']||0}</div><div class="metric-sub">This period</div></div>
-    <div class="metric"><div class="metric-label">Client Retention</div><div class="metric-value">94%</div><div class="metric-sub up">▲ Excellent</div></div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-    <div class="panel">
-      <div class="panel-title">📊 Clients by Plan</div>
-      <table><thead><tr><th>Plan</th><th>Clients</th><th>Share</th></tr></thead><tbody>
-        ${Object.entries(byPlan).map(([plan,count])=>`<tr>
-          <td>${plan}</td><td>${count}</td>
-          <td><div style="background:#e8f0fb;border-radius:4px;height:8px;width:${Math.round(count/CLIENTS.length*100)}%;min-width:8px"></div>${Math.round(count/CLIENTS.length*100)}%</td>
-        </tr>`).join('')}
-      </tbody></table>
-    </div>
-    <div class="panel">
-      <div class="panel-title">📋 Client Status Breakdown</div>
-      ${['active','pending','review'].map(s=>{
-        const count = CLIENTS.filter(c=>c.status===s).length;
-        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0">
-          <span class="pill pill-${s}" style="text-transform:capitalize">${s}</span>
-          <strong>${count} clients (${Math.round(count/CLIENTS.length*100)}%)</strong>
-        </div>`;
-      }).join('')}
-    </div>
-  </div>
-  <div class="panel">
-    <div class="panel-title">📥 Export Reports</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-outline" onclick="alert('Client report exported as CSV')">📄 Export Clients (CSV)</button>
-      <button class="btn btn-outline" onclick="alert('Transaction report exported as CSV')">📄 Export Transactions (CSV)</button>
-      <button class="btn btn-outline" onclick="alert('Full audit report exported as PDF')">📄 Full Audit (PDF)</button>
-      <button class="btn btn-outline" onclick="alert('Monthly summary exported')">📄 Monthly Summary</button>
-    </div>
-  </div>`;
-}
-
-// ════════════════════════════════════════
-// CLIENT PAGES
-// ════════════════════════════════════════
-function getClientData() {
-  return CLIENTS.find(c=>c.id===currentUser.id) || CLIENTS[0];
-}
-
-function renderClientDashboard() {
-  const el = document.getElementById('main-content');
-  const cd = getClientData();
-  const myQuotes = SAVED_QUOTES.filter(q=>q.clientId===currentUser.id);
-  const myTxns = TRANSACTIONS.filter(t=>t.client===currentUser.name);
-  el.innerHTML = `
-  <div class="page-header"><h2>Welcome, ${currentUser.name.split(' ')[0]} 👋</h2><p>Your financial overview.</p></div>
-  <div class="metrics">
-    <div class="metric"><div class="metric-label">My Plan</div><div class="metric-value" style="font-size:16px">${cd.plan}</div><div class="metric-sub up">▲ Active</div></div>
-    <div class="metric"><div class="metric-label">Monthly Contribution</div><div class="metric-value">£${cd.monthly}</div><div class="metric-sub">Per month</div></div>
-    <div class="metric"><div class="metric-label">Lump Sum Invested</div><div class="metric-value">£${cd.lump.toLocaleString()}</div><div class="metric-sub">Initial deposit</div></div>
-    <div class="metric"><div class="metric-label">Saved Quotes</div><div class="metric-value">${myQuotes.length}</div><div class="metric-sub">Generated</div></div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-    <div class="panel">
-      <div class="panel-title">🔗 Quick Actions</div>
-      <div style="display:grid;gap:8px">
-        <button class="btn btn-primary btn-block" onclick="navigateTo('client-currency')">💱 Currency Converter</button>
-        <button class="btn btn-outline btn-block" onclick="navigateTo('client-savings')">📈 Get Investment Quote</button>
-        <button class="btn btn-outline btn-block" onclick="navigateTo('client-portfolio')">💼 View My Portfolio</button>
-        <button class="btn btn-outline btn-block" onclick="navigateTo('client-quotes')">📋 My Saved Quotes</button>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">🧾 My Recent Transactions</div>
-      ${myTxns.length ? myTxns.map(t=>`<div class="activity-item">
-        <div class="act-dot" style="background:${t.type==='FX'?'#2557a7':'#1a6b3a'}"></div>
-        <div class="act-content">${t.detail}</div>
-        <div class="act-time">${t.date.slice(5)}</div>
-      </div>`).join('') : '<p style="color:var(--muted);font-size:13px">No transactions yet.</p>'}
-    </div>
-  </div>`;
-}
-
-function renderClientPortfolio() {
-  const el = document.getElementById('main-content');
-  const cd = getClientData();
-  const plan = INV_PLANS.find(p=>p.name===cd.plan)||INV_PLANS[0];
-  const proj = calcProjection(plan, cd.lump, cd.monthly);
-  el.innerHTML = `
-  <div class="page-header"><h2>My Portfolio</h2><p>Your current investment overview.</p></div>
-  <div class="panel">
-    <div class="panel-title">💼 Portfolio Summary</div>
-    <div class="two-col">
-      <div>
-        <div class="result-box">
-          <div class="result-row"><span class="result-label">Plan</span><span class="result-val">${cd.plan}</span></div>
-          <div class="result-row"><span class="result-label">Initial lump sum</span><span class="result-val">£${cd.lump.toLocaleString()}</span></div>
-          <div class="result-row"><span class="result-label">Monthly contribution</span><span class="result-val">£${cd.monthly}/mo</span></div>
-          <div class="result-row"><span class="result-label">Annual return range</span><span class="result-val">${(plan.minR*100).toFixed(1)}% – ${(plan.maxR*100).toFixed(1)}%</span></div>
-          <div class="result-row"><span class="result-label">Monthly fee</span><span class="result-val">${(plan.fee*100).toFixed(2)}%</span></div>
-          <div class="result-row"><span class="result-label">Account status</span><span class="result-val" style="color:var(--success)">● Active</span></div>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--primary)">Projected growth</div>
-        <table class="rtbl" style="font-size:12px;width:100%;border-collapse:collapse">
-          <thead><tr><th>Period</th><th>Min value</th><th>Max value</th><th>Min profit</th></tr></thead>
-          <tbody>${proj.map(r=>`<tr>
-            <td style="padding:7px 10px">${r.years} year${r.years>1?'s':''}</td>
-            <td style="padding:7px 10px" class="pos">${fmtGBP(r.lo.val)}</td>
-            <td style="padding:7px 10px" class="pos">${fmtGBP(r.hi.val)}</td>
-            <td style="padding:7px 10px" class="pos">+${fmtGBP(r.lo.profit)}</td>
-          </tr>`).join('')}</tbody>
-        </table>
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderClientQuotes() {
-  const el = document.getElementById('main-content');
-  const myQuotes = SAVED_QUOTES.filter(q=>q.clientId===currentUser.id);
-  el.innerHTML = `
-  <div class="page-header"><h2>My Saved Quotes</h2><p>Your previously generated quotes.</p></div>
-  <div class="panel">
-    ${myQuotes.length ? myQuotes.map(q=>`<div class="quote-card">
-      <div class="quote-card-header">
-        <div class="quote-type">${q.type==='Investment'?'📈':'💱'} ${q.type==='Investment'?q.plan:'FX: '+q.from+' → '+q.to}</div>
-        <div class="quote-date">${q.date}</div>
-      </div>
-      ${q.summary?`<div style="font-size:13px;color:var(--primary)">${q.summary}</div>`:`<div style="font-size:13px">Amount: ${q.amount} ${q.from} → ${q.result}</div>`}
-    </div>`).join('') : '<p style="color:var(--muted);font-size:13px">No saved quotes yet. Use the calculators to generate quotes.</p>'}
-    <div style="margin-top:12px">
-      <button class="btn btn-primary" onclick="navigateTo('client-savings')">📈 Get Investment Quote</button>
-      <button class="btn btn-outline" style="margin-left:8px" onclick="navigateTo('client-currency')">💱 Get FX Quote</button>
-    </div>
-  </div>`;
-}
-
-function renderClientTransactions() {
-  const el = document.getElementById('main-content');
-  const myTxns = TRANSACTIONS.filter(t=>t.client===currentUser.name);
-  el.innerHTML = `
-  <div class="page-header"><h2>My Transactions</h2><p>Your complete transaction history.</p></div>
-  <div class="panel">
-    ${myTxns.length ? `<div class="tbl-wrap"><table>
-      <thead><tr><th>Ref</th><th>Type</th><th>Details</th><th>Fee</th><th>Date</th></tr></thead>
-      <tbody>${myTxns.map(t=>`<tr>
-        <td><code>${t.id}</code></td>
-        <td><span class="pill ${t.type==='FX'?'pill-review':'pill-active'}">${t.type}</span></td>
-        <td>${t.detail}</td>
-        <td style="color:var(--danger)">${t.fee}</td>
-        <td style="font-size:12px;color:var(--muted)">${t.date}</td>
-      </tr>`).join('')}</tbody>
-    </table></div>` : '<p style="color:var(--muted);font-size:13px">No transactions found for your account.</p>'}
-  </div>`;
-}
-
-// ════════════════════════════════════════
-// CURRENCY CONVERTER (shared)
-// ════════════════════════════════════════
-function renderCurrency(mode) {
-  const el = document.getElementById('main-content');
-  const currencies = Object.keys(FX_RATES);
-  el.innerHTML = `
-  <div class="page-header"><h2>Currency Converter</h2><p>Calculate the cost of buying and selling different currencies.</p></div>
-  <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px">
-    <div class="panel">
-      <div class="panel-title">💱 Conversion Calculator</div>
-      <div class="three-col">
-        <div class="field"><label>Amount</label><input type="number" id="fx-amt" placeholder="e.g. 1000" oninput="calcFX()"></div>
-        <div class="field"><label>From</label>
-          <select id="fx-from" onchange="calcFX()">
-            ${currencies.map(c=>`<option value="${c}">${c} – ${currName(c)}</option>`).join('')}
-          </select>
-        </div>
-        <div class="field"><label>To</label>
-          <select id="fx-to" onchange="calcFX()">
-            ${currencies.filter(c=>c!=='GBP').map(c=>`<option value="${c}">${c} – ${currName(c)}</option>`).join('')}
-            <option value="GBP">GBP – Pound Sterling</option>
-          </select>
-        </div>
-      </div>
-      <div class="alert alert-error" id="fx-err"></div>
-      <div id="fx-result" style="display:none">
-        <div class="result-box">
-          <div class="result-row"><span class="result-label">Amount entered</span><span class="result-val" id="r-amt"></span></div>
-          <div class="result-row"><span class="result-label">Exchange rate</span><span class="result-val" id="r-rate"></span></div>
-          <div class="result-row"><span class="result-label">Gross converted amount</span><span class="result-val" id="r-gross"></span></div>
-          <div class="result-row"><span class="result-label">Fee rate</span><span class="result-val" id="r-feepc"></span></div>
-          <div class="result-row"><span class="result-label fee-val">Transaction fee</span><span class="result-val fee-val" id="r-fee"></span></div>
-        </div>
-        <div class="result-total-row">
-          <span style="font-weight:700;color:var(--primary)">Client receives</span>
-          <span class="result-val" id="r-net"></span>
-        </div>
-        ${mode==='client'?`<div style="margin-top:12px"><button class="btn btn-success" onclick="saveQuoteFX()">💾 Save This Quote</button></div>`:''}
-      </div>
-      <div style="margin-top:10px;font-size:12px;color:var(--muted)">ℹ️ Min transaction: 300 · Max transaction: 5,000 of source currency. Rates are indicative.</div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">📡 Live Rates (base GBP)</div>
-      <div class="rates-grid">
-        ${Object.entries(FX_RATES).filter(([k])=>k!=='GBP').map(([cur,rate])=>`
-          <div class="rate-card"><div class="rate-pair">${cur}/GBP</div><div class="rate-value">${rate.toFixed(4)}</div></div>`).join('')}
-      </div>
-      <div style="margin-top:14px" class="panel-title">🧮 Fee Schedule</div>
-      <table style="font-size:12px;width:100%;border-collapse:collapse">
-        <thead><tr><th style="padding:6px;text-align:left;font-size:11px;border-bottom:1px solid var(--border)">Amount</th><th style="padding:6px;text-align:left;font-size:11px;border-bottom:1px solid var(--border)">Fee</th></tr></thead>
-        <tbody>
-          <tr><td style="padding:5px 6px">Up to 500</td><td style="padding:5px 6px;color:var(--danger)">3.5%</td></tr>
-          <tr><td style="padding:5px 6px">Over 500</td><td style="padding:5px 6px;color:var(--danger)">2.7%</td></tr>
-          <tr><td style="padding:5px 6px">Over 1,500</td><td style="padding:5px 6px;color:var(--danger)">2.0%</td></tr>
-          <tr><td style="padding:5px 6px">Over 2,500</td><td style="padding:5px 6px;color:var(--danger)">1.5%</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-function calcFX() {
-  const amt = parseFloat(document.getElementById('fx-amt').value);
-  const from = document.getElementById('fx-from').value;
-  const to = document.getElementById('fx-to').value;
-  const errEl = document.getElementById('fx-err');
-  const resEl = document.getElementById('fx-result');
-  errEl.style.display='none'; resEl.style.display='none';
-  if (!amt || isNaN(amt)) return;
-  if (amt < 300) { errEl.textContent=`Minimum transaction is 300 ${from}.`; errEl.style.display='block'; return; }
-  if (amt > 5000) { errEl.textContent=`Maximum transaction is 5,000 ${from}.`; errEl.style.display='block'; return; }
-  if (from===to) { errEl.textContent='From and To currencies must be different.'; errEl.style.display='block'; return; }
-  const rate = FX_RATES[to]/FX_RATES[from];
-  const gross = amt*rate;
-  const fr = feeRate(amt);
-  const fee = gross*fr;
-  const net = gross-fee;
-  document.getElementById('r-amt').textContent = fmtCur(amt,from);
-  document.getElementById('r-rate').textContent = `1 ${from} = ${rate.toFixed(4)} ${to}`;
-  document.getElementById('r-gross').textContent = fmtCur(gross,to);
-  document.getElementById('r-feepc').textContent = (fr*100).toFixed(1)+'%';
-  document.getElementById('r-fee').textContent = '− '+fmtCur(fee,to);
-  document.getElementById('r-net').textContent = fmtCur(net,to);
-  resEl.style.display='block';
-  resEl.dataset.from=from; resEl.dataset.to=to; resEl.dataset.amt=amt; resEl.dataset.net=net.toFixed(2);
-}
-
-function saveQuoteFX() {
-  const r = document.getElementById('fx-result');
-  SAVED_QUOTES.push({id:'q'+Date.now(), clientId:currentUser.id, type:'FX', from:r.dataset.from, to:r.dataset.to, amount:parseFloat(r.dataset.amt), result:r.dataset.net+' '+r.dataset.to, date:new Date().toISOString().slice(0,10)});
-  showAlert('fx-saved','✅ Quote saved to your profile!');
-  const div = document.createElement('div');
-  div.className='alert alert-success'; div.id='fx-saved'; div.style.display='none';
-  document.getElementById('fx-result').after(div);
-  showAlert('fx-saved','✅ Quote saved!');
-}
-
-// ════════════════════════════════════════
-// SAVINGS CALCULATOR (shared)
-// ════════════════════════════════════════
-function renderSavings(mode) {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>Savings & Investment Calculator</h2><p>Generate personalised investment projections.</p></div>
-  <div class="panel">
-    <div class="panel-title">📈 Select Investment Plan</div>
-    <div class="inv-cards" id="inv-cards">
-      ${INV_PLANS.map((p,i)=>`<div class="inv-card ${i===0?'selected':''}" onclick="selectPlan(${i})">
-        <div class="inv-card-name">${p.name}</div>
-        <div class="inv-card-detail">${p.desc}</div>
-      </div>`).join('')}
-    </div>
-    <div class="two-col">
-      <div class="field"><label>Initial lump sum (£)</label><input type="number" id="sv-lump" placeholder="e.g. 5000" oninput="calcSavings('${mode}')"></div>
-      <div class="field"><label>Monthly contribution (£)</label><input type="number" id="sv-monthly" placeholder="e.g. 200" oninput="calcSavings('${mode}')"></div>
-    </div>
-    <div class="alert alert-error" id="sv-err"></div>
-  </div>
-  <div class="panel" id="sv-results" style="display:none">
-    <div class="panel-title">📊 Projected Returns</div>
-    <div class="tbl-wrap"><table class="rtbl">
-      <thead><tr><th>Period</th><th>Min value</th><th>Max value</th><th>Min profit</th><th>Max profit</th><th>Total fees</th><th>Est. tax</th></tr></thead>
-      <tbody id="sv-tbody"></tbody>
-    </table></div>
-    <div style="margin-top:10px;font-size:12px;color:var(--muted)">⚠️ Past performance does not guarantee future returns. Tax estimates are indicative only.</div>
-    ${mode==='client'?`<div style="margin-top:12px"><button class="btn btn-success" onclick="saveQuoteInv()">💾 Save This Quote</button><div class="alert alert-success" id="inv-saved" style="margin-top:8px"></div></div>`:''}
-  </div>`;
-  selInv = 0;
-}
-
-function selectPlan(idx) {
-  selInv = idx;
-  document.querySelectorAll('.inv-card').forEach((c,i)=>c.classList.toggle('selected',i===idx));
-  calcSavings();
-}
-
-function calcSavings(mode) {
-  const lump = parseFloat(document.getElementById('sv-lump').value)||0;
-  const monthly = parseFloat(document.getElementById('sv-monthly').value)||0;
-  const plan = INV_PLANS[selInv];
-  const errEl = document.getElementById('sv-err');
-  const resEl = document.getElementById('sv-results');
-  errEl.style.display='none'; resEl.style.display='none';
-  if (!lump && !monthly) return;
-  if (plan.minLump && lump>0 && lump<plan.minLump) { errEl.textContent=`Minimum lump sum for this plan is £${plan.minLump}.`; errEl.style.display='block'; return; }
-  if (monthly && monthly<plan.minMonthly) { errEl.textContent=`Minimum monthly contribution is £${plan.minMonthly}.`; errEl.style.display='block'; return; }
-  const proj = calcProjection(plan, lump, monthly);
-  const tbody = document.getElementById('sv-tbody');
-  tbody.innerHTML = proj.map(r=>`<tr>
-    <td style="padding:8px 12px;font-weight:600">${r.years} year${r.years>1?'s':''}</td>
-    <td style="padding:8px 12px" class="pos">${fmtGBP(r.lo.val)}</td>
-    <td style="padding:8px 12px" class="pos">${fmtGBP(r.hi.val)}</td>
-    <td style="padding:8px 12px" class="pos">+${fmtGBP(r.lo.profit)}</td>
-    <td style="padding:8px 12px" class="pos">+${fmtGBP(r.hi.profit)}</td>
-    <td style="padding:8px 12px;color:var(--danger)">${fmtGBP((r.lo.fees+r.hi.fees)/2)}</td>
-    <td style="padding:8px 12px;color:var(--danger)">${fmtGBP((r.lo.tax+r.hi.tax)/2)}</td>
-  </tr>`).join('');
-  resEl.style.display='block';
-  resEl.dataset.lump=lump; resEl.dataset.monthly=monthly; resEl.dataset.plan=INV_PLANS[selInv].name;
-  resEl.dataset.summary=`1yr: ${fmtGBP(proj[0].lo.val)}–${fmtGBP(proj[0].hi.val)} | 5yr: ${fmtGBP(proj[1].lo.val)}–${fmtGBP(proj[1].hi.val)}`;
-}
-
-function saveQuoteInv() {
-  const r = document.getElementById('sv-results');
-  SAVED_QUOTES.push({id:'q'+Date.now(), clientId:currentUser.id, type:'Investment', plan:r.dataset.plan, lump:parseFloat(r.dataset.lump), monthly:parseFloat(r.dataset.monthly), date:new Date().toISOString().slice(0,10), summary:r.dataset.summary});
-  const div = document.getElementById('inv-saved');
-  div.textContent='✅ Quote saved to your profile!'; div.style.display='block';
-  setTimeout(()=>div.style.display='none',3000);
-}
-
-function calcProjection(plan, lump, monthly) {
-  return [1,5,10].map(years=>{
-    function proj(rate) {
-      let val = lump, fees = 0;
-      const months = years*12;
-      for (let m=0;m<months;m++) {
-        val += monthly;
-        const mFee = val*plan.fee;
-        fees += mFee;
-        val = val*(1+rate/12)-mFee;
-      }
-      const invested = lump+monthly*months;
-      const profit = Math.max(0,val-invested);
-      const tax = calcTax(profit, plan);
-      return {val, profit, fees, tax};
-    }
-    return {years, lo:proj(plan.minR), hi:proj(plan.maxR)};
-  });
-}
-
-function calcTax(profit, plan) {
-  if (!plan.tax1) return 0;
-  let t = 0;
-  if (plan.taxThr1 && profit > plan.taxThr1) {
-    const band1 = plan.taxThr2 ? Math.min(profit, plan.taxThr2)-plan.taxThr1 : profit-plan.taxThr1;
-    t += Math.max(0,band1)*plan.tax1;
-  }
-  if (plan.tax2 && plan.taxThr2 && profit > plan.taxThr2) {
-    t += (profit-plan.taxThr2)*plan.tax2;
-  }
-  return t;
-}
-
-// ════════════════════════════════════════
-// PROFILE (shared)
-// ════════════════════════════════════════
-function renderProfile() {
-  const el = document.getElementById('main-content');
-  el.innerHTML = `
-  <div class="page-header"><h2>My Profile</h2><p>Manage your account details.</p></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-    <div class="panel">
-      <div class="panel-title">👤 Personal Information</div>
-      <div class="profile-header">
-        <div class="profile-av" style="background:${currentUser.color}">${currentUser.initials}</div>
-        <div><div class="profile-name">${currentUser.name}</div><div class="profile-role">${roleLabel(currentUser.role)}</div></div>
-      </div>
-      <div class="field"><label>Full name</label><input type="text" value="${currentUser.name}"></div>
-      <div class="field"><label>Username</label><input type="text" value="${currentUser.username}" readonly style="background:#f5f5f5"></div>
-      <div class="field"><label>Role</label><input type="text" value="${roleLabel(currentUser.role)}" readonly style="background:#f5f5f5"></div>
-      <div class="field"><label>Email</label><input type="email" value="${currentUser.username}@enomy.com"></div>
-      <button class="btn btn-primary btn-block" onclick="alert('Profile details saved.')">Save Changes</button>
-    </div>
-    <div class="panel">
-      <div class="panel-title">🔒 Security</div>
-      <div class="field"><label>Current password</label><input type="password" placeholder="Enter current password"></div>
-      <div class="field"><label>New password</label><input type="password" placeholder="Enter new password"></div>
-      <div class="field"><label>Confirm new password</label><input type="password" placeholder="Confirm new password"></div>
-      <button class="btn btn-primary btn-block" onclick="alert('Password changed successfully.')">Change Password</button>
-      <div style="margin-top:20px" class="panel-title">🔔 Preferences</div>
-      <div class="field"><label>Language</label><select><option>English (UK)</option><option>Welsh</option></select></div>
-      <div class="field"><label>Currency display</label><select><option>GBP (£)</option><option>USD ($)</option><option>EUR (€)</option></select></div>
-      <button class="btn btn-outline btn-block" onclick="alert('Preferences saved.')">Save Preferences</button>
-    </div>
-  </div>`;
-}
-
-// ════════════════════════════════════════
-// MODALS: VIEW / EDIT CLIENT
-// ════════════════════════════════════════
-function viewClient(id) {
-  const c = CLIENTS.find(x=>x.id===id);
-  if (!c) return;
-  openModal('Client Details: '+c.name, `
-    <div class="profile-header" style="margin-bottom:16px">
-      <div class="cav" style="width:50px;height:50px;font-size:16px;background:${statusColor(c.status).bg};color:${statusColor(c.status).fg}">${initials(c.name)}</div>
-      <div><div class="profile-name">${c.name}</div><div class="profile-role">${c.plan}</div></div>
-    </div>
-    <div class="result-box">
-      <div class="result-row"><span class="result-label">Email</span><span class="result-val">${c.email}</span></div>
-      <div class="result-row"><span class="result-label">Phone</span><span class="result-val">${c.phone}</span></div>
-      <div class="result-row"><span class="result-label">Status</span><span class="pill pill-${c.status}">${c.status}</span></div>
-      <div class="result-row"><span class="result-label">Monthly investment</span><span class="result-val">£${c.monthly}/mo</span></div>
-      <div class="result-row"><span class="result-label">Initial lump sum</span><span class="result-val">${c.lump?'£'+c.lump.toLocaleString():'N/A'}</span></div>
-      <div class="result-row"><span class="result-label">Joined</span><span class="result-val">${c.joinDate}</span></div>
-      <div class="result-row"><span class="result-label">Notes</span><span class="result-val">${c.notes}</span></div>
-    </div>
-    <div style="margin-top:14px;display:flex;gap:8px">
-      <button class="btn btn-primary" onclick="closeModal();editClient('${c.id}')">Edit Client</button>
-      <button class="btn btn-outline" onclick="closeModal()">Close</button>
-    </div>`);
-}
-
-function editClient(id) {
-  const c = CLIENTS.find(x=>x.id===id);
-  if (!c) return;
-  const planOpts = INV_PLANS.map(p=>`<option ${p.name===c.plan?'selected':''}>${p.name}</option>`).join('');
-  const statusOpts = ['active','pending','review'].map(s=>`<option ${s===c.status?'selected':''}>${s}</option>`).join('');
-  openModal('Edit Client: '+c.name, `
-    <div class="field"><label>Full name</label><input type="text" id="ec-name" value="${c.name}"></div>
-    <div class="field"><label>Email</label><input type="email" id="ec-email" value="${c.email}"></div>
-    <div class="field"><label>Phone</label><input type="tel" id="ec-phone" value="${c.phone}"></div>
-    <div class="field"><label>Investment plan</label><select id="ec-plan">${planOpts}</select></div>
-    <div class="two-col">
-      <div class="field"><label>Lump sum (£)</label><input type="number" id="ec-lump" value="${c.lump}"></div>
-      <div class="field"><label>Monthly (£)</label><input type="number" id="ec-monthly" value="${c.monthly}"></div>
-    </div>
-    <div class="field"><label>Status</label><select id="ec-status">${statusOpts}</select></div>
-    <div class="field"><label>Notes</label><textarea id="ec-notes">${c.notes}</textarea></div>
-    <div style="display:flex;gap:8px;margin-top:8px">
-      <button class="btn btn-primary" onclick="saveClient('${c.id}')">Save Changes</button>
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-    </div>`);
-}
-
-function saveClient(id) {
-  const c = CLIENTS.find(x=>x.id===id);
-  if (!c) return;
-  c.name=document.getElementById('ec-name').value;
-  c.email=document.getElementById('ec-email').value;
-  c.phone=document.getElementById('ec-phone').value;
-  c.plan=document.getElementById('ec-plan').value;
-  c.lump=parseFloat(document.getElementById('ec-lump').value)||0;
-  c.monthly=parseFloat(document.getElementById('ec-monthly').value)||0;
-  c.status=document.getElementById('ec-status').value;
-  c.notes=document.getElementById('ec-notes').value;
-  closeModal();
-  alert('Client updated successfully!');
-  const current = document.querySelector('.nav-item.active');
-  if (current) current.click();
-}
-
-function openAddClient() {
-  const planOpts = INV_PLANS.map(p=>`<option>${p.name}</option>`).join('');
-  openModal('Add New Client', `
-    <div class="field"><label>Full name</label><input type="text" id="nc-name" placeholder="e.g. Jane Smith"></div>
-    <div class="field"><label>Email</label><input type="email" id="nc-email" placeholder="email@example.com"></div>
-    <div class="field"><label>Phone</label><input type="tel" id="nc-phone" placeholder="07xxx xxx xxx"></div>
-    <div class="field"><label>Investment plan</label><select id="nc-plan">${planOpts}</select></div>
-    <div class="two-col">
-      <div class="field"><label>Lump sum (£)</label><input type="number" id="nc-lump" value="0"></div>
-      <div class="field"><label>Monthly (£)</label><input type="number" id="nc-monthly" value="50"></div>
-    </div>
-    <div class="field"><label>Notes</label><textarea id="nc-notes" placeholder="Any relevant notes..."></textarea></div>
-    <div style="display:flex;gap:8px;margin-top:8px">
-      <button class="btn btn-primary" onclick="addClient()">Add Client</button>
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-    </div>`);
-}
-
-function addClient() {
-  const name = document.getElementById('nc-name').value.trim();
-  if (!name) { alert('Please enter a client name.'); return; }
-  const newClient = {
-    id:'c'+Date.now(),
-    name, email:document.getElementById('nc-email').value,
-    phone:document.getElementById('nc-phone').value,
-    plan:document.getElementById('nc-plan').value,
-    lump:parseFloat(document.getElementById('nc-lump').value)||0,
-    monthly:parseFloat(document.getElementById('nc-monthly').value)||0,
-    status:'pending', notes:document.getElementById('nc-notes').value,
-    joinDate:new Date().toISOString().slice(0,10)
-  };
-  CLIENTS.push(newClient);
-  closeModal();
-  alert('Client '+name+' added successfully!');
-}
-
-// ════════════════════════════════════════
-// MODALS: STAFF MANAGEMENT
-// ════════════════════════════════════════
-function openAddStaff() {
-  openModal('Add Staff Member', `
-    <div class="field"><label>Full name</label><input type="text" id="ns-name" placeholder="e.g. Jane Smith"></div>
-    <div class="field"><label>Email</label><input type="email" id="ns-email" placeholder="email@enomy.com"></div>
-    <div class="field"><label>Role</label><select id="ns-role"><option>Financial Advisor</option><option>Investment Analyst</option><option>Client Manager</option><option>Compliance Officer</option></select></div>
-    <div class="field"><label>Username</label><input type="text" id="ns-username" placeholder="e.g. jsmith"></div>
-    <div class="field"><label>Temporary password</label><input type="password" id="ns-pass" placeholder="Set initial password"></div>
-    <div style="display:flex;gap:8px;margin-top:8px">
-      <button class="btn btn-primary" onclick="addStaff()">Add Staff</button>
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-    </div>`);
-}
-
-function addStaff() {
-  const name = document.getElementById('ns-name').value.trim();
-  if (!name) { alert('Please enter a name.'); return; }
-  const newStaff = {
-    id:'s'+Date.now(), name,
-    email:document.getElementById('ns-email').value,
-    role:document.getElementById('ns-role').value,
-    username:document.getElementById('ns-username').value,
-    status:'active', clients:0
-  };
-  STAFF_LIST.push(newStaff);
-  USERS.staff.push({id:newStaff.id, username:newStaff.username, password:document.getElementById('ns-pass').value||'pass123', name, role:'staff', initials:initials(name), color:'#2557a7'});
-  closeModal();
-  alert('Staff member '+name+' added successfully!');
-  renderTOStaff();
-}
-
-function editStaff(id) {
-  const s = STAFF_LIST.find(x=>x.id===id);
-  if (!s) return;
-  openModal('Edit Staff: '+s.name, `
-    <div class="field"><label>Full name</label><input type="text" id="es-name" value="${s.name}"></div>
-    <div class="field"><label>Email</label><input type="email" id="es-email" value="${s.email}"></div>
-    <div class="field"><label>Role</label><input type="text" id="es-role" value="${s.role}"></div>
-    <div class="field"><label>Status</label><select id="es-status"><option ${s.status==='active'?'selected':''}>active</option><option ${s.status==='inactive'?'selected':''}>inactive</option></select></div>
-    <div style="display:flex;gap:8px;margin-top:8px">
-      <button class="btn btn-primary" onclick="saveStaff('${s.id}')">Save</button>
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-    </div>`);
-}
-
-function saveStaff(id) {
-  const s = STAFF_LIST.find(x=>x.id===id);
-  if (!s) return;
-  s.name=document.getElementById('es-name').value;
-  s.email=document.getElementById('es-email').value;
-  s.role=document.getElementById('es-role').value;
-  s.status=document.getElementById('es-status').value;
-  closeModal(); renderTOStaff();
-}
-
-function removeStaff(id) {
-  if (!confirm('Remove this staff member?')) return;
-  const idx = STAFF_LIST.findIndex(s=>s.id===id);
-  if (idx>-1) STAFF_LIST.splice(idx,1);
-  renderTOStaff();
-}
-
-// ════════════════════════════════════════
-// MODAL HELPERS
-// ════════════════════════════════════════
-function openModal(title, body) {
-  document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-body').innerHTML = body;
-  document.getElementById('modal-overlay').classList.add('open');
-}
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
-document.getElementById('modal-overlay').addEventListener('click',function(e){ if(e.target===this)closeModal(); });
-
-// ════════════════════════════════════════
-// UTILITIES
-// ════════════════════════════════════════
-function feeRate(amount) {
-  if (amount<=500) return 0.035;
-  if (amount<=1500) return 0.027;
-  if (amount<=2500) return 0.020;
-  return 0.015;
-}
-function fmtCur(v, cur) { return FX_SYMBOLS[cur]+Number(v.toFixed(2)).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function fmtGBP(v) { return '£'+Math.round(v).toLocaleString('en-GB'); }
-function currName(c) { return {GBP:'Pound Sterling',USD:'US Dollar',EUR:'Euro',BRL:'Brazilian Real',JPY:'Japanese Yen',TRY:'Turkish Lira'}[c]||c; }
-function initials(name) { return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
-function statusColor(s) { return {active:{bg:'#e8f8ef',fg:'#1a6b3a'},pending:{bg:'#fff3dc',fg:'#7a4f00'},review:{bg:'#e8f0fb',fg:'#2557a7'}}[s]||{bg:'#eee',fg:'#333'}; }
-function showAlert(id, msg) { const el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',3000);} }
-
-// Mobile sidebar toggle
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebar-overlay').classList.toggle('open');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('open');
-}
-document.addEventListener('click', function(e) {
-  if (window.innerWidth <= 700 && e.target.closest('.nav-item')) { closeSidebar(); }
+// ── STAR PICKER ──
+const starSpans = document.querySelectorAll('#star-picker span');
+starSpans.forEach(s => {
+  s.addEventListener('mouseenter', () => highlightStars(+s.dataset.val));
+  s.addEventListener('mouseleave', () => highlightStars(selectedRating));
+  s.addEventListener('click', () => { selectedRating = +s.dataset.val; highlightStars(selectedRating); });
 });
+function highlightStars(n) {
+  starSpans.forEach(s => s.classList.toggle('lit', +s.dataset.val <= n));
+}
+
+// ── SUBMIT REVIEW ──
+function submitReview() {
+  const name = document.getElementById('r-name').value.trim();
+  const dish = document.getElementById('r-dish').value.trim();
+  const text = document.getElementById('r-text').value.trim();
+  if (!name) { showToast('Please enter your name', true); return; }
+  if (!selectedRating) { showToast('Please select a rating ★', true); return; }
+  if (!text || text.length < 10) { showToast('Please write a longer review', true); return; }
+  const rev = {
+    id: Date.now(),
+    name, dish, rating: selectedRating,
+    text, date: new Date().toISOString().slice(0,10),
+    status: 'pending'
+  };
+  reviews.unshift(rev);
+  save();
+  // reset
+  document.getElementById('r-name').value = '';
+  document.getElementById('r-dish').value = '';
+  document.getElementById('r-text').value = '';
+  selectedRating = 0;
+  highlightStars(0);
+  renderReviews();
+  showToast('✅ Thank you! Your review is awaiting approval.');
+}
+
+// ── RENDER PUBLIC REVIEWS ──
+function renderReviews() {
+  const approved = reviews.filter(r => r.status === 'approved' || r.status === 'featured');
+  const list = document.getElementById('reviews-list');
+  const noMsg = document.getElementById('no-reviews-msg');
+  const countLbl = document.getElementById('reviews-count-label');
+
+  // stats
+  const total = approved.length;
+  const avg = total ? (approved.reduce((a,r) => a+r.rating,0)/total).toFixed(1) : '–';
+  const fives = approved.filter(r=>r.rating===5).length;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-avg').textContent = avg !== '–' ? avg + '★' : '–';
+  document.getElementById('stat-five').textContent = fives;
+
+  if (total === 0) {
+    list.innerHTML=''; noMsg.style.display='block';
+    countLbl.textContent = 'Be the first to leave a review!';
+    return;
+  }
+  noMsg.style.display='none';
+  countLbl.textContent = `${total} guest review${total===1?'':'s'} · Avg ${avg} ★`;
+
+  // featured first
+  const sorted = [...approved].sort((a,b) => (b.status==='featured')-(a.status==='featured'));
+  list.innerHTML = sorted.map(r => `
+    <div class="review-card ${r.status==='featured'?'featured':''}">
+      <div class="reviewer-header">
+        <div class="reviewer-avatar">${r.name.charAt(0).toUpperCase()}</div>
+        <div class="reviewer-info">
+          <strong>${escHtml(r.name)}</strong>
+          <span>${starsHtml(r.rating)}</span>
+        </div>
+      </div>
+      <p class="review-text">${escHtml(r.text)}</p>
+      ${r.dish ? `<span class="review-dish">🍽 ${escHtml(r.dish)}</span>` : ''}
+      <div class="review-date">📅 ${r.date}</div>
+    </div>
+  `).join('');
+}
+
+function starsHtml(n) {
+  return '★'.repeat(n) + '☆'.repeat(5-n);
+}
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── ADMIN LOGIN ──
+function doLogin() {
+  const u = document.getElementById('admin-user').value.trim();
+  const p = document.getElementById('admin-pass').value;
+  if (u === ADMIN_CREDS.user && p === ADMIN_CREDS.pass) {
+    document.getElementById('login-error').style.display='none';
+    showPage('page-admin');
+    renderAdmin();
+  } else {
+    document.getElementById('login-error').style.display='block';
+  }
+}
+function logout() { showPage('page-reviews'); }
+
+// ── ADMIN RENDER ──
+function renderAdmin() {
+  const total = reviews.length;
+  const pending = reviews.filter(r=>r.status==='pending').length;
+  const approved = reviews.filter(r=>r.status==='approved').length;
+  const featured = reviews.filter(r=>r.status==='featured').length;
+  const approvedAll = reviews.filter(r=>r.status!=='pending');
+  const avg = approvedAll.length ? (approvedAll.reduce((a,r)=>a+r.rating,0)/approvedAll.length).toFixed(1) : '–';
+
+  document.getElementById('a-total').textContent = total;
+  document.getElementById('a-pending').textContent = pending;
+  document.getElementById('a-approved').textContent = approved;
+  document.getElementById('a-featured').textContent = featured;
+  document.getElementById('a-avg').textContent = avg !== '–' ? avg + '★' : '–';
+
+  let filtered = adminFilter === 'all' ? reviews : reviews.filter(r=>r.status===adminFilter);
+  const tbody = document.getElementById('admin-table-body');
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--mist)">No reviews in this category.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtered.map(r => `
+    <tr>
+      <td data-label="Reviewer"><strong style="color:var(--foam)">${escHtml(r.name)}</strong></td>
+      <td data-label="Rating"><span style="color:var(--gold)">${starsHtml(r.rating)}</span></td>
+      <td data-label="Dish">${r.dish ? escHtml(r.dish) : '<span style="color:#555">—</span>'}</td>
+      <td data-label="Review"><div class="review-full-text" title="${escHtml(r.text)}">${escHtml(r.text)}</div></td>
+      <td data-label="Date">${r.date}</td>
+      <td data-label="Status"><span class="status-badge ${r.status}">${r.status}</span></td>
+      <td data-label="Actions">
+        <div class="action-btns">
+          ${r.status === 'pending' ? `<button class="act-btn approve" onclick="approveReview(${r.id})">✓ Approve</button>` : ''}
+          ${r.status === 'approved' ? `<button class="act-btn feature" onclick="featureReview(${r.id})">⭐ Feature</button>` : ''}
+          ${r.status === 'featured' ? `<button class="act-btn unapprove" onclick="unfeatureReview(${r.id})">↩ Unfeature</button>` : ''}
+          ${r.status !== 'pending' ? `<button class="act-btn unapprove" onclick="pendingReview(${r.id})">⏸ Unpublish</button>` : ''}
+          <button class="act-btn delete" onclick="deleteReview(${r.id})">🗑</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function approveReview(id) {
+  const r = reviews.find(x=>x.id===id);
+  if(r){ r.status='approved'; save(); renderAdmin(); renderReviews(); showToast('✅ Review approved!'); }
+}
+function featureReview(id) {
+  const r = reviews.find(x=>x.id===id);
+  if(r){ r.status='featured'; save(); renderAdmin(); renderReviews(); showToast('⭐ Review featured!'); }
+}
+function unfeatureReview(id) {
+  const r = reviews.find(x=>x.id===id);
+  if(r){ r.status='approved'; save(); renderAdmin(); renderReviews(); showToast('Review unfeatured.'); }
+}
+function pendingReview(id) {
+  const r = reviews.find(x=>x.id===id);
+  if(r){ r.status='pending'; save(); renderAdmin(); renderReviews(); showToast('Review unpublished.'); }
+}
+function deleteReview(id) {
+  if(!confirm('Delete this review permanently?')) return;
+  reviews = reviews.filter(x=>x.id!==id);
+  save(); renderAdmin(); renderReviews(); showToast('Review deleted.', true);
+}
+function filterAdmin(f, btn) {
+  adminFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdmin();
+}
+
+// ── TOAST ──
+function showToast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError?' error':'');
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// ── INIT ──
+renderReviews();
 </script>
 </body>
 </html>
